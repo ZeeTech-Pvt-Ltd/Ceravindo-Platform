@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Ceravindo">
+  <!-- An olive tile with a rising data line. The same drawing is in
+       src/components/Logo.jsx and in the data-URI icon in index.html; all
+       three must stay in step. The geometry is duplicated rather than shared
+       because two of the three are not React and cannot import it. -->
+  <rect width="32" height="32" rx="9" fill="#4A5D23"/>
+  <path d="M7 22 12.5 16.5 17 20 25 10" fill="none" stroke="#FBFAF7"
+        stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="25" cy="10" r="2.6" fill="#FBFAF7"/>
+</svg>

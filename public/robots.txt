@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# /thank-you is deliberately NOT disallowed here, even though it is a
+# post-registration page with no indexing value. A robots.txt block stops
+# crawlers fetching the page at all, which means they never see the
+# "noindex, nofollow" meta tag that page carries - and a URL that is linked
+# from elsewhere can still be indexed without its content ever being read.
+# The meta tag is the reliable signal, so let the page be crawled and let the
+# tag do the de-indexing. Do not re-add a Disallow for it.
+
+Sitemap: https://ceravindo-platform.com/sitemap.xml

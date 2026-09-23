@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Olive tile with a rising data line - the browser-tab icon. Kept as a
+         data URI so it costs no request, and mirrored in public/favicon.svg
+         and src/components/Logo.jsx; all three must stay in step.
+         `#` is written as %23 inside a data URI. -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%234A5D23'/><path d='M7 22 12.5 16.5 17 20 25 10' fill='none' stroke='%23FBFAF7' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/><circle cx='25' cy='10' r='2.6' fill='%23FBFAF7'/></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#4A5D23" />
+    <!-- Marks the document as JS-enabled so .reveal content hides only when a
+         script will actually reveal it; without JS everything stays visible
+         (prerendered HTML included). -->
+    <script>document.documentElement.classList.add('js')</script>
+
+    <!-- Fonts are self-hosted, so the page makes no third-party request at
+         runtime - which is what lets the privacy policy say so plainly. -->
+    <link rel="preload" href="/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Primary metadata (homepage defaults; <Seo/> updates per route).
+         scripts/build.mjs REPLACES everything from here down per route, so in
+         production these values never ship - they exist for the dev server,
+         where index.html is served as-is. Keep them in step with seo.home in
+         src/data/seo.js or dev and production disagree. -->
+    <title>Ceravindo | AI Market Research for Australian Investors</title>
+    <meta name="description" content="Ceravindo is an AI-assisted market research platform for Australia - structured crypto and multi-market analysis, published with its sources and limits." />
+    <meta name="keywords" content="AI market research australia, market research platform, crypto research Australia, Ceravindo" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href="https://ceravindo-platform.com/" />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Ceravindo" />
+    <meta property="og:title" content="Ceravindo | AI Market Research for Australian Investors" />
+    <meta property="og:description" content="Ceravindo is an AI-assisted market research platform for Australia - structured crypto and multi-market analysis, published with its sources and limits." />
+    <meta property="og:url" content="https://ceravindo-platform.com/" />
+    <meta property="og:image" content="https://ceravindo-platform.com/og-image.png" />
+    <meta property="og:image:alt" content="Ceravindo - AI-assisted market research for Australian investors" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_AU" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ceravindo | AI Market Research for Australian Investors" />
+    <meta name="twitter:description" content="Ceravindo is an AI-assisted market research platform for Australia - structured crypto and multi-market analysis, published with its sources and limits." />
+    <meta name="twitter:image" content="https://ceravindo-platform.com/og-image.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

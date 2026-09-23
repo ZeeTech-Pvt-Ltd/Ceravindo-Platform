@@ -1,0 +1,3457 @@
+/* =========================================================================
+   Ceravindo - design system
+   "Paper & Olive": warm paper canvas, near-black ink, one deep olive accent.
+
+   CONTRAST LEDGER (WCAG 2.1, sRGB relative luminance, computed and verified
+   with the formula L = 0.2126R + 0.7152G + 0.0722B). Read this before
+   changing any colour below - several values look interchangeable and are
+   not.
+
+     ink        on bg         17.35 : 1  AAA
+     ink        on surface    16.03 : 1  AAA
+     muted      on bg          5.40 : 1  AA
+     muted      on surface     4.99 : 1  AA   <- tightest pairing on the site
+     accent     on bg          6.98 : 1  AA   <- olive used as TEXT (links,
+                                               eyebrows, inline emphasis)
+     accent     on surface     6.45 : 1  AA
+     white      on accent      7.29 : 1  AA   <- the primary button.
+                                               NOT ink: ink on accent is
+                                               2.49 : 1 and cannot be fixed
+                                               by darkening ink - two dark
+                                               colours cannot contrast.
+     accent-2ink on bg         5.33 : 1  AA   <- sage as text/icon stroke.
+                                               Plain --sage is 2.94 : 1, so
+                                               it is DECORATION ONLY.
+     highlight-ink on bg       5.67 : 1  AA   <- amber as text. Plain --amber
+                                               is 2.85 : 1, so it is rules
+                                               and dots only.
+     danger     on bg          6.38 : 1  AA
+     field-line on paper       3.63 : 1  AA   UI boundary (SC 1.4.11). --border
+                                               is 1.32 : 1 and is a decorative
+                                               hairline - never a control edge.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   Fonts - self-hosted latin subsets, so the page makes no third-party
+   request at runtime. That is what lets the privacy policy state plainly
+   that nothing is sent anywhere.
+   ------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Instrument Sans';
+  src: url('/fonts/instrument-sans.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* -------------------------------------------------------------------------
+   Tokens
+   ------------------------------------------------------------------------- */
+
+:root {
+  /* Surfaces */
+  --bg: #fbfaf7;
+  --surface: #f3f1ea;
+  --paper: #ffffff;
+
+  /* Text */
+  --ink: #14161a;
+  --muted: #6b675e;
+
+  /* Primary accent - deep olive */
+  --accent: #4a5d23;
+  --accent-strong: #3b4a1b;
+  --accent-deep: #2f3b14;
+  --accent-tint: #eef0e4;
+
+  /* Secondary - sage. DECORATION ONLY at this value (2.94:1). When sage has
+     to carry meaning (icon strokes, small labels, state borders) use
+     --sage-ink, which is 5.33:1 on --bg. */
+  --sage: #8a9a5b;
+  --sage-ink: #5f6e38;
+
+  /* Highlight - amber. DECORATION ONLY at this value (2.85:1 on the light
+     canvas). Text on light takes --amber-ink (5.67:1); text on the dark
+     olive band takes --amber-bright, because --amber there measures 4.50:1 -
+     technically AA, but with no margin at all. */
+  --amber: #c8892b;
+  --amber-ink: #8a5a0f;
+  --amber-bright: #e0a24a;
+
+  /* Feedback */
+  --danger: #a8322a;
+  --danger-tint: #f7e9e7;
+
+  /* Lines */
+  --border: #e4e0d6; /* decorative hairlines only */
+  --field-line: #8c8677; /* every input / picker / select edge (SC 1.4.11) */
+
+  /* Dark data surfaces. The market panel and the ticker use these so a
+     trading interface reads as one, without repainting the light page. */
+  --panel: #12150c;
+  --panel-2: #1b2011;
+  --panel-line: rgba(255, 255, 255, 0.1);
+  --on-panel: #f2f5ea;
+  /* Between the two above: brighter than the muted tone, dimmer than the
+     heading tone. Used for the footer's body copy, which sits under a
+     heading and needs to read as secondary without disappearing. */
+  --on-panel-soft: #dde3d5;
+  --on-panel-muted: #9aa889;
+
+  /* Chart colours. Both clear 3:1 against --panel, which is what a graphical
+     object needs - they are never used for text. */
+  --chart-up: #93d94f;
+  --chart-down: #f2825f;
+  --chart-grid: rgba(255, 255, 255, 0.14);
+
+  /* Focus - far above the 3:1 requirement at 6.98:1, and reads as a
+     deliberate brand mark rather than a browser default. */
+  --focus: var(--accent);
+
+  /* Type. Headings are a grotesque sans, body is Inter. The two are separate
+     tokens because they are separate roles, not because they differ much
+     visually - Instrument Sans carries slightly more character than Inter,
+     which is what keeps a heading from reading as very big body text. */
+  --font-display: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Caps at 62px. The middle term is what scales: it reaches the cap around
+     a 1040px viewport and shrinks below that, so the headline still fits a
+     phone without a separate mobile rule. */
+  --fs-display: clamp(2.4rem, 1.15rem + 4.2vw, 3.875rem);
+  --fs-h2: clamp(1.85rem, 1.1rem + 2.4vw, 2.85rem);
+  --fs-h3: clamp(1.3rem, 1.05rem + 0.8vw, 1.6rem);
+  --fs-h4: 1.0625rem;
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
+  --fs-micro: 0.8125rem;
+
+  --lh-display: 1.06;
+  --lh-heading: 1.18;
+  --lh-body: 1.68;
+
+  /* Layout */
+  --wrap: 1160px;
+  --wrap-narrow: 780px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --header-h: 72px;
+  --section-y: clamp(4rem, 7.5vw, 7rem);
+
+  /* Shape */
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  /* Elevation - shallow on purpose; this is a paper aesthetic, not glass. */
+  --shadow-sm: 0 1px 2px rgba(20, 22, 26, 0.05);
+  --shadow: 0 2px 8px rgba(20, 22, 26, 0.06), 0 12px 28px -18px rgba(20, 22, 26, 0.18);
+  --shadow-lg: 0 8px 24px rgba(20, 22, 26, 0.08), 0 32px 64px -32px rgba(20, 22, 26, 0.26);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 220ms;
+
+  color-scheme: light;
+}
+
+/* -------------------------------------------------------------------------
+   Reset + base
+   ------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Anchors must clear the sticky header. */
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  /* Clips at the root so a 320px viewport never gains a horizontal
+     scrollbar, while leaving the sticky header untouched. */
+  overflow-x: clip;
+}
+
+body {
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  color: var(--accent-strong);
+}
+
+/* One focus treatment everywhere, visible on paper and on the olive band. */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+::selection {
+  background: var(--accent-tint);
+  color: var(--ink);
+}
+
+/* -------------------------------------------------------------------------
+   Typography
+   ------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  /* Tracking is stepped by size rather than fixed. The base value here is the
+     h3 step; h1 and h2 tighten further and h4 relaxes, because the same
+     negative tracking that makes a 72px line read as one shape starts closing
+     up the gaps between letters at 17px. */
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-wrap: balance;
+  /* Title Case. This capitalises the first letter of every word, so short
+     words are capitalised too ("Three Steps, And Only The First One Is
+     Ours") - which is what CSS can do. Proper Title Case would leave "and",
+     "the" and "of" lowercase, and needs the headings rewritten by hand.
+     It never lowercases, so acronyms and symbols (BTC/AUD, 404, AI) are
+     left exactly as written. */
+  text-transform: capitalize;
+}
+
+h1 {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  letter-spacing: -0.022em;
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  letter-spacing: -0.018em;
+}
+
+/* Now that the display face is a sans, h4 stays in it rather than dropping to
+   Inter - mixing two grotesques at the same weight reads as an accident
+   rather than as a hierarchy. */
+h4 {
+  font-size: var(--fs-h4);
+  font-weight: 650;
+  letter-spacing: -0.008em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.lead {
+  font-size: clamp(1.0625rem, 0.98rem + 0.4vw, 1.1875rem);
+  line-height: 1.62;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* The dot is a decorative mark, so it uses the full-strength sage; the text
+   beside it uses the accessible olive. */
+.eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sage);
+  flex: none;
+}
+
+.eyebrow--plain::before {
+  display: none;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: var(--fs-small);
+}
+
+/* Numerals line up in metrics and tables. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* -------------------------------------------------------------------------
+   Layout
+   ------------------------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.wrap--narrow {
+  max-width: var(--wrap-narrow);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section--surface {
+  background: var(--surface);
+}
+
+.section--tight {
+  padding-block: clamp(2.75rem, 5vw, 4rem);
+}
+
+.section-head {
+  max-width: 62ch;
+  margin-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+
+.section-head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-head h2 {
+  margin-top: 0.75rem;
+}
+
+.section-head .lead {
+  margin-top: 1rem;
+}
+
+.section-head--center .lead {
+  margin-inline: auto;
+}
+
+/* -------------------------------------------------------------------------
+   Buttons
+   ------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  font-family: var(--font-sans);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* White on olive = 7.29:1. Never ink on olive - that is 2.49:1. */
+.btn--primary {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background: var(--accent-strong);
+  color: #ffffff;
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--field-line);
+  color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: var(--accent-tint);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.btn--light {
+  background: var(--paper);
+  color: var(--accent);
+  border-color: var(--border);
+}
+
+.btn--light:hover {
+  color: var(--accent-strong);
+}
+
+.btn--lg {
+  padding: 0.95rem 1.85rem;
+  font-size: 1rem;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn[disabled],
+.btn[aria-disabled='true'] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn__arrow {
+  transition: transform var(--dur) var(--ease);
+}
+
+.btn:hover .btn__arrow {
+  transform: translateX(3px);
+}
+
+/* -------------------------------------------------------------------------
+   Cards + surfaces
+   ------------------------------------------------------------------------- */
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: clamp(1.35rem, 2.5vw, 1.85rem);
+  box-shadow: var(--shadow-sm);
+}
+
+/* -------------------------------------------------------------------------
+   Forms
+   ------------------------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Field labels only. The consent checkbox is a <label> inside a .field too,
+   but it holds a sentence rather than a field name, so it is excluded - the
+   uppercase treatment would turn it into shouting. */
+.field > label:not(.check) {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  height: 48px;
+  padding: 0 0.9rem;
+  background: var(--paper);
+  /* --field-line, not --border: a control edge must clear 3:1 (SC 1.4.11). */
+  border: 1px solid var(--field-line);
+  border-radius: var(--r);
+  color: var(--ink);
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.field input::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(74, 93, 35, 0.16);
+}
+
+.field input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.field input[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 3px rgba(168, 50, 42, 0.16);
+}
+
+.field__error {
+  font-size: var(--fs-micro);
+  color: var(--danger);
+}
+
+/* Honeypot. Off-screen rather than display:none - some bots skip fields that
+   are hidden outright, and the point is to be filled. */
+.field-hp {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* -------------------------------------------------------------------------
+   Reveal - progressive disclosure on scroll.
+   Hidden only when html.js is present, so a prerendered page stays fully
+   readable if the script never runs.
+   ------------------------------------------------------------------------- */
+
+.reveal {
+  opacity: 1;
+}
+
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 620ms var(--ease),
+    transform 620ms var(--ease);
+}
+
+html.js .reveal[data-revealed='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+/* -------------------------------------------------------------------------
+   Utilities
+   ------------------------------------------------------------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 100;
+  padding: 0.65rem 1rem;
+  background: var(--accent);
+  color: #ffffff;
+  border-radius: var(--r);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--dur) var(--ease);
+}
+
+.skip-link:focus {
+  top: 1rem;
+  color: #ffffff;
+}
+
+/* -------------------------------------------------------------------------
+   Logo
+   ------------------------------------------------------------------------- */
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo__mark {
+  display: block;
+  flex: none;
+  width: 30px;
+  height: 30px;
+}
+
+.logo__mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.logo__word {
+  font-family: var(--font-display);
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+/* On the dark footer. Only the wordmark changes - the mark carries its own
+   olive tile and paper line, which read the same on either surface. */
+.logo--on-dark .logo__word {
+  color: var(--on-panel);
+}
+
+/* The footer mark is set larger than the header's: it is the top of a column
+   with nothing beside it, where the header's sits in a row of nav and calls
+   for less weight. */
+.footer .logo__mark {
+  width: 42px;
+  height: 42px;
+}
+
+.footer .logo__word {
+  font-size: 1.65rem;
+}
+
+/* -------------------------------------------------------------------------
+   Header
+   ------------------------------------------------------------------------- */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(1.6) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: var(--header-h);
+}
+
+.header__brand {
+  text-decoration: none;
+  flex: none;
+}
+
+.header__nav {
+  display: none;
+  gap: 0.35rem;
+  margin-left: auto;
+}
+
+.header__link {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  font-size: var(--fs-small);
+  font-weight: 550;
+  text-decoration: none;
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.header__link:hover {
+  color: var(--ink);
+  background: var(--accent-tint);
+}
+
+.header__link.is-active {
+  color: var(--accent);
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: auto;
+}
+
+.header__cta {
+  display: none;
+}
+
+.header__burger {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--field-line);
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink);
+}
+
+.header__drawer {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.header__drawer[hidden] {
+  display: none;
+}
+
+.header__drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem var(--gutter) 1.35rem;
+}
+
+.header__drawer-link {
+  padding: 0.8rem 0.25rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.header__drawer-nav .btn {
+  margin-top: 0.85rem;
+}
+
+@media (min-width: 900px) {
+  .header__nav {
+    display: flex;
+  }
+
+  .header__actions {
+    margin-left: 0;
+  }
+
+  .header__cta {
+    display: inline-flex;
+  }
+
+  .header__burger {
+    display: none;
+  }
+
+  .header__drawer {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Hero
+   ------------------------------------------------------------------------- */
+
+.hero {
+  padding-block: clamp(1.85rem, 3.5vw, 3rem) clamp(1.5rem, 3vw, 2.35rem);
+}
+
+.hero__inner {
+  display: grid;
+  gap: clamp(2.25rem, 5vw, 3.75rem);
+  align-items: start;
+}
+
+.hero__title {
+  margin-top: 0.85rem;
+  /* Wide enough for the headline to break in two ("Read The Market" /
+     "Before You Trade It.") rather than wherever the column runs out.
+     Measured in ch, which is narrow for mixed-case text - and wider again
+     now the headings are Title Case. */
+  max-width: 21ch;
+}
+
+.hero__lead {
+  margin-top: 1.25rem;
+}
+
+.checks {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.75rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: var(--fs-small);
+  color: var(--ink);
+}
+
+.checks__icon {
+  flex: none;
+  margin-top: 0.28rem;
+  color: var(--accent);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.hero__visual {
+  min-width: 0;
+}
+
+/* ---- market panel ----
+   The dark surface is what makes the page read as a trading product. Every
+   figure inside is generated - see the "Illustrative data" badge, which is
+   not decoration. */
+
+.market-panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-xl);
+  padding: clamp(1.15rem, 2.5vw, 1.5rem);
+  box-shadow:
+    0 1px 2px rgba(18, 21, 12, 0.4),
+    0 24px 60px -28px rgba(18, 21, 12, 0.55);
+  color: var(--on-panel);
+}
+
+.market-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.badge-sample {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.28rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--r-pill);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--on-panel-muted);
+}
+
+.badge-sample__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex: none;
+}
+
+/* Sits at the end of a card's header row rather than on its own line. */
+.badge-sample--tight {
+  flex: none;
+  margin-left: auto;
+  padding: 0.2rem 0.52rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.07em;
+}
+
+.market-panel__market {
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+.market-panel__price {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.9rem 0.7rem;
+}
+
+.market-panel__symbol {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.008em;
+  color: var(--on-panel);
+}
+
+.market-panel__name {
+  margin-top: 0.15rem;
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+.market-panel__figures {
+  text-align: right;
+}
+
+.market-panel__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--on-panel);
+}
+
+.market-panel__change {
+  margin-top: 0.2rem;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.market-panel__change.is-up,
+.market-panel__row-change.is-up {
+  color: var(--chart-up);
+}
+
+.market-panel__change.is-down,
+.market-panel__row-change.is-down {
+  color: var(--chart-down);
+}
+
+.market-panel__period {
+  color: var(--on-panel-muted);
+  font-weight: 450;
+}
+
+.market-panel__chart {
+  height: 98px;
+  margin-bottom: 0.35rem;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.market-panel__timeframes {
+  display: flex;
+  gap: 0.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.tf {
+  padding: 0.3rem 0.7rem;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--on-panel-muted);
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.tf:hover {
+  color: var(--on-panel);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.tf.is-active {
+  background: rgba(255, 255, 255, 0.13);
+  color: var(--on-panel);
+}
+
+.market-panel__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0.9rem 0 0;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.market-panel__rows li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding: 0.5rem 0.15rem;
+}
+
+.market-panel__row-symbol {
+  font-size: var(--fs-small);
+  font-weight: 550;
+  color: var(--on-panel);
+}
+
+.market-panel__row-price {
+  font-size: var(--fs-small);
+  color: var(--on-panel-muted);
+}
+
+.market-panel__row-change {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  min-width: 4.2rem;
+  text-align: right;
+}
+
+@media (min-width: 1000px) {
+  .hero__inner {
+    /* Copy gets the larger share: the headline needs the room more than the
+       panel does, and the panel has a fixed internal layout. */
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    align-items: center;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Trust strip
+   ------------------------------------------------------------------------- */
+
+.trust {
+  border-block: 1px solid var(--border);
+  background: var(--surface);
+  padding-block: 1.05rem;
+}
+
+.trust__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.6rem;
+  justify-content: center;
+}
+
+.trust__item {
+  font-size: var(--fs-micro);
+  font-weight: 550;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.trust__item + .trust__item::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--sage);
+  margin-right: 0.95rem;
+  flex: none;
+}
+
+/* -------------------------------------------------------------------------
+   What is - copy beside the brief card
+   ------------------------------------------------------------------------- */
+
+.whatis {
+  display: grid;
+  gap: clamp(2rem, 4.5vw, 3.5rem);
+  align-items: center;
+}
+
+.whatis__visual {
+  min-width: 0;
+}
+
+.whatis__para {
+  margin-top: 1.1rem;
+  color: var(--muted);
+}
+
+.whatis__para:first-of-type {
+  margin-top: 1.5rem;
+  font-size: 1.125rem;
+  color: var(--ink);
+}
+
+@media (min-width: 940px) {
+  .whatis {
+    /* The card is the narrower half - it is a fixed-shape object, while the
+       copy sets its own measure. */
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  }
+}
+
+/* ---- brief card ----
+   Same dark surface as the hero panel but a different object: the hero shows
+   a live market, this shows what the research produces. */
+
+.brief-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-xl);
+  padding: clamp(1.15rem, 2.5vw, 1.6rem);
+  box-shadow:
+    0 1px 2px rgba(18, 21, 12, 0.4),
+    0 24px 60px -28px rgba(18, 21, 12, 0.55);
+  color: var(--on-panel);
+}
+
+.brief-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.brief-card__symbol {
+  font-family: var(--font-display);
+  font-size: var(--fs-small);
+  font-weight: 650;
+  letter-spacing: -0.008em;
+  color: var(--on-panel);
+}
+
+.brief-card__finding {
+  padding-block: 1.1rem 0.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 2vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: -0.012em;
+  color: var(--on-panel);
+}
+
+.brief-card__chart {
+  height: 92px;
+  margin-block: 0.6rem 0.2rem;
+}
+
+.brief-card__price {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--fs-small);
+  color: var(--on-panel-muted);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.brief-card__price .is-up {
+  color: var(--chart-up);
+  font-weight: 650;
+}
+
+.brief-card__price .is-down {
+  color: var(--chart-down);
+  font-weight: 650;
+}
+
+.brief-card__confidence {
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.brief-card__confidence-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--on-panel-muted);
+}
+
+.brief-card__confidence-row span:last-child {
+  color: var(--on-panel);
+  font-size: var(--fs-small);
+}
+
+.meter {
+  height: 6px;
+  margin-top: 0.6rem;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.meter__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--chart-up);
+}
+
+.brief-card__sources {
+  padding-top: 1rem;
+}
+
+.brief-card__sources-label {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--on-panel-muted);
+}
+
+.brief-card__sources ul {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.brief-card__sources li {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-pill);
+  background: var(--panel-2);
+  font-size: var(--fs-micro);
+  font-weight: 550;
+  color: var(--on-panel-muted);
+}
+
+/* -------------------------------------------------------------------------
+   Steps
+   ------------------------------------------------------------------------- */
+
+.steps {
+  --steps-gap: 1.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--steps-gap);
+  counter-reset: step;
+}
+
+.steps__item {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+}
+
+.steps__n {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--amber-ink);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.7rem;
+}
+
+.steps__title {
+  font-size: var(--fs-h4);
+  font-weight: 650;
+  margin-bottom: 0.5rem;
+}
+
+.steps__body {
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+@media (min-width: 860px) {
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* A connector drawn across the gap between cards, so the three read as one
+     sequence rather than as three unrelated boxes. It sits at the height of
+     the step numbers, which is what makes it follow the order.
+     Only between cards - never before the first or after the last. */
+  .steps__item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 2.09rem;
+    left: 100%;
+    width: var(--steps-gap);
+    height: 2px;
+    /* Starts visible at 32% rather than fading from nothing - a gradient that
+       begins transparent disappears against the surface it crosses. */
+    background: linear-gradient(
+      90deg,
+      rgba(95, 110, 56, 0.32),
+      var(--sage-ink)
+    );
+  }
+
+  .steps__item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    top: calc(2.09rem - 4px);
+    left: calc(100% + var(--steps-gap) - 7px);
+    width: 0;
+    height: 0;
+    border-left: 7px solid var(--sage-ink);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Research method
+   ------------------------------------------------------------------------- */
+
+
+/* ---- the pipeline ---- */
+
+.pipeline {
+  list-style: none;
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.pipeline__step {
+  display: grid;
+  gap: 0.3rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.pipeline__n {
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  color: var(--amber-ink);
+}
+
+.pipeline__label {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+}
+
+.pipeline__detail {
+  font-size: var(--fs-micro);
+  color: var(--muted);
+}
+
+/* The last step is a boundary, not a stage. White on --accent is 7.29:1. */
+.pipeline__step.is-limit {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.pipeline__step.is-limit .pipeline__n {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.pipeline__step.is-limit .pipeline__label,
+.pipeline__step.is-limit .pipeline__detail {
+  color: #fff;
+}
+
+@media (min-width: 780px) {
+  .pipeline {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+/* ---- input cards ---- */
+
+.inputs {
+  display: grid;
+  gap: 1.1rem;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.input-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-xl);
+  padding: 1.25rem;
+  color: var(--on-panel);
+}
+
+.input-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.input-card__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: var(--r-sm);
+  background: var(--panel-2);
+  color: var(--chart-up);
+}
+
+.input-card__title {
+  font-size: var(--fs-h4);
+  font-weight: 650;
+  /* h3 sets color: var(--ink) for the light page, which is near-black and
+     would disappear into this surface. */
+  color: var(--on-panel);
+}
+
+.input-card__rows {
+  margin-top: auto;
+}
+
+.input-card__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: var(--fs-small);
+  padding-block: 0.7rem;
+  border-top: 1px solid var(--panel-line);
+}
+
+.input-card__mark {
+  flex: none;
+  margin-top: 0.25rem;
+}
+
+.input-card__row--can .input-card__mark {
+  color: var(--chart-up);
+}
+
+.input-card__row--cannot .input-card__mark {
+  color: var(--chart-down);
+}
+
+.input-card__row--can p {
+  color: var(--on-panel);
+}
+
+.input-card__row--cannot p {
+  color: var(--on-panel-muted);
+}
+
+.inputs__footnote {
+  margin-top: 2rem;
+  padding: 1.1rem 1.3rem;
+  border-left: 3px solid var(--amber);
+  background: var(--surface);
+  border-radius: 0 var(--r) var(--r) 0;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+@media (min-width: 760px) {
+  .inputs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---- the small chart in each input card ---- */
+
+.iviz {
+  height: 104px;
+  margin-block: 1.1rem;
+  display: flex;
+  align-items: stretch;
+}
+
+.iviz--chart {
+  display: block;
+}
+
+/* Net flow: bars diverge from a centre line, so inflow and outflow are
+   readable as opposite directions rather than as two different magnitudes. */
+/* Each bar gets its own relative column so it can be positioned vertically
+   within it; laying them out with flex keeps the horizontal spacing even
+   without hard-coding a width per bar. */
+.flow-bars {
+  position: relative;
+  display: flex;
+  gap: 3px;
+  width: 100%;
+}
+
+.flow-bars__col {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.flow-bars__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 2px;
+}
+
+.flow-bars__bar.is-in {
+  background: var(--chart-up);
+}
+
+.flow-bars__bar.is-out {
+  background: var(--chart-down);
+}
+
+.flow-bars__axis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--chart-grid);
+}
+
+/* A position on a range, not a value - so it reads as a slider with a
+   marker rather than as a progress bar. */
+.sentiment {
+  width: 100%;
+  align-self: center;
+}
+
+.sentiment__track {
+  position: relative;
+  height: 8px;
+  border-radius: var(--r-pill);
+  background: var(--panel-2);
+  border: 1px solid var(--panel-line);
+}
+
+.sentiment__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, rgba(242, 130, 95, 0.45), rgba(147, 217, 79, 0.45));
+}
+
+.sentiment__marker {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: var(--on-panel);
+  border: 2px solid var(--panel);
+  transform: translateY(-50%);
+}
+
+.sentiment__scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.65rem;
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+.sentiment__scale span:nth-child(2) {
+  color: var(--on-panel);
+  font-weight: 650;
+}
+
+/* A schedule, not a curve: discrete rows with a time and an impact. */
+.events {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  align-self: center;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.events li {
+  display: grid;
+  grid-template-columns: 4.6rem 1fr auto;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: var(--fs-micro);
+}
+
+.events__when {
+  color: var(--on-panel-muted);
+}
+
+.events__label {
+  color: var(--on-panel);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.events__impact {
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--panel-line);
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--on-panel-muted);
+}
+
+.events__impact.is-high {
+  color: var(--chart-down);
+  border-color: rgba(242, 130, 95, 0.4);
+}
+
+/* -------------------------------------------------------------------------
+   Coverage
+   ------------------------------------------------------------------------- */
+
+.coverage {
+  display: grid;
+  gap: 1.1rem;
+}
+
+/* Each market is a card carrying its own price series, rather than a column
+   of icon + text. */
+.coverage__item {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.25rem;
+}
+
+.coverage__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.coverage__title {
+  font-size: var(--fs-h4);
+  font-weight: 650;
+}
+
+.coverage__symbol {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.coverage__chart {
+  height: 58px;
+  margin-block: 0.9rem 0.5rem;
+}
+
+/* The ups and downs are generated, so the word stays on the figure itself
+   rather than only in the note above the grid. */
+.coverage__change {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+}
+
+.coverage__change.is-up {
+  color: var(--sage-ink);
+}
+
+.coverage__change.is-down {
+  color: var(--danger);
+}
+
+.coverage__period {
+  color: var(--muted);
+  font-weight: 450;
+}
+
+.coverage__body {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+@media (min-width: 700px) {
+  .coverage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .coverage {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Risk band
+   ------------------------------------------------------------------------- */
+
+.risk {
+  background: var(--accent-deep);
+  color: #fff;
+  padding-block: var(--section-y);
+}
+
+.risk__head {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.75rem;
+}
+
+.risk__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: var(--r);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.risk__title {
+  color: #fff;
+  font-size: var(--fs-h2);
+}
+
+.risk__grid {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  /* Centred, not top-aligned: the list is shorter than the drawdown card, so
+     starting both at the top left the card overhanging below with dead space
+     beside it. */
+  align-items: center;
+}
+
+/* Numbered rather than bulleted: each line is a thing the reader can check,
+   and a number makes that read as a list of facts instead of a paragraph of
+   caveats to skim past. */
+/* The block sits centred in its column; the text inside stays left-aligned.
+   Centring the text as well would leave every line starting at a different
+   x, which reads worse than a common left edge - so the list is given a
+   narrower measure and centred as a whole instead. */
+.risk__list {
+  list-style: none;
+  max-width: 30rem;
+  margin-inline: auto;
+  padding: 0;
+  display: grid;
+  gap: 0.1rem;
+  counter-reset: risk;
+}
+
+/* Dividers between items only - no rule above the first or below the last.
+   The outer two read as a box around the list rather than as separation. */
+.risk__list li {
+  display: grid;
+  grid-template-columns: 1.9rem 1fr;
+  gap: 0.9rem;
+  align-items: baseline;
+  padding-block: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: var(--fs-small);
+  /* 11.96:1 on --accent-deep, comfortably AAA. */
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.risk__list li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.risk__n {
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  /* --amber is only 4.50:1 against this band; this is 5.30:1. */
+  color: var(--amber-bright);
+}
+
+/* ---- the drawdown card ----
+   Paper, not near-black. The card sits on the olive band, and a black panel
+   on a dark band reads as a hole in the page rather than as a card - the two
+   surfaces are too close in value to separate. Light against the band is the
+   reading the other panels on the page do not have, which is right for the
+   one section that is arguing against the product. */
+
+.risk__visual {
+  min-width: 0;
+}
+
+.risk-visual {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: clamp(1.15rem, 2.5vw, 1.5rem);
+  box-shadow: 0 24px 60px -32px rgba(0, 0, 0, 0.45);
+  color: var(--ink);
+}
+
+.risk-visual__head {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* The dark-surface badge has a white border and light text; on paper it needs
+   the reverse. */
+.badge-sample--light {
+  border-color: var(--border);
+  color: var(--muted);
+}
+
+.risk-visual__chart {
+  position: relative;
+  height: 130px;
+  margin-block: 1.15rem 0.4rem;
+}
+
+/* Peak and trough labels are positioned as a percentage of the chart width,
+   so they track the markers when the container resizes. */
+.risk-visual__marks {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.risk-visual__marks span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.risk-visual__stats {
+  margin: 0;
+  display: grid;
+  gap: 0.1rem;
+}
+
+.risk-visual__stats > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+
+.risk-visual__stats dt {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.risk-visual__stats dd {
+  margin: 0;
+  font-size: var(--fs-small);
+  font-weight: 650;
+  text-align: right;
+  color: var(--ink);
+}
+
+.risk-visual__stats dd.is-down {
+  color: var(--danger);
+}
+
+/* Leads the section rather than closing it. Set as a lead paragraph - no rule
+   above it, because a rule there would read as a divider between the heading
+   and its own summary. */
+.risk__lead {
+  margin-top: 1.35rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  max-width: 78ch;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+@media (min-width: 940px) {
+  .risk__grid {
+    /* The list is the argument; the card is the evidence for it. */
+    grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   FAQ
+   ------------------------------------------------------------------------- */
+
+.faq {
+  border-top: 1px solid var(--border);
+}
+
+.faq__item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq__q {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.faq__button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.15rem 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  /* A question is a heading, so it follows the display face rather than
+     reverting to Inter the way a plain button would. */
+  font-family: var(--font-display);
+  font-size: 1.0125rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.faq__button:hover {
+  color: var(--accent);
+}
+
+.faq__chevron {
+  flex: none;
+  color: var(--muted);
+  transition: transform var(--dur) var(--ease);
+}
+
+.faq__item.is-open .faq__chevron {
+  transform: rotate(180deg);
+}
+
+.faq__panel[hidden] {
+  display: none;
+}
+
+.faq__panel p {
+  padding-bottom: 1.25rem;
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+.faq__more {
+  margin-top: 1.75rem;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+/* -------------------------------------------------------------------------
+   Register section
+   ------------------------------------------------------------------------- */
+
+.register__inner {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.register__form {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: clamp(1.35rem, 3vw, 2rem);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 940px) {
+  .register__inner {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Final CTA
+   ------------------------------------------------------------------------- */
+
+.final {
+  position: relative;
+  /* Clips the backdrop to the band, which is what lets the chart run off the
+     edges without ever affecting the page's scroll width. */
+  overflow: hidden;
+  background: var(--accent-deep);
+  color: #fff;
+  padding-block: clamp(3rem, 6vw, 4.5rem);
+}
+
+/* Larger than the band on every side, so it runs off rather than sitting
+   inside it. The SVG's own preserveAspectRatio fills whatever box this is. */
+.final__backdrop {
+  position: absolute;
+  top: -18%;
+  left: -6%;
+  width: 112%;
+  height: 136%;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* Darkens the left, where the headline sits, and lets the chart through on
+   the right. Without it the candles run straight under the text. */
+.final::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    var(--accent-deep) 22%,
+    rgba(47, 59, 20, 0.78) 55%,
+    rgba(47, 59, 20, 0.42) 100%
+  );
+  pointer-events: none;
+}
+
+.final__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1.75rem;
+  justify-items: start;
+}
+
+.final__title {
+  color: #fff;
+  font-size: var(--fs-h2);
+  max-width: 22ch;
+}
+
+.final__body {
+  margin-top: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 56ch;
+}
+
+/* The one button on the page that sits on a dark fill - it inverts to paper
+   so it keeps the olive as text rather than white on white. */
+.final .btn--light {
+  background: var(--paper);
+  color: var(--accent-deep);
+  border-color: transparent;
+}
+
+.final .btn--light:hover {
+  background: #fff;
+  color: var(--accent-strong);
+}
+
+@media (min-width: 860px) {
+  .final__inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------------------- */
+
+/* Near-black, not the page background. The footer sitting on the same paper
+   as the page made the whole bottom of the site read as leftover space; the
+   dark surface closes the page instead. It is --panel rather than the olive
+   of the band above it, so the two dark areas stay legible as two things. */
+.footer {
+  background: var(--panel);
+  color: var(--on-panel);
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.footer__inner {
+  display: grid;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+.footer__blurb {
+  margin-top: 0.9rem;
+  font-size: var(--fs-small);
+  color: var(--on-panel-soft);
+  max-width: 42ch;
+}
+
+.footer__contact {
+  margin-top: 0.75rem;
+  font-size: var(--fs-small);
+}
+
+.footer__heading {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-panel);
+  margin-bottom: 0.75rem;
+}
+
+.footer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+/* Nav links sit at the same weight as the column headings above them. They
+   cannot brighten on hover - they are already at the brightest token on this
+   surface - so the underline carries the hover state on its own. */
+.footer__list a {
+  color: var(--on-panel);
+}
+
+.footer__contact a {
+  color: var(--on-panel-soft);
+}
+
+.footer__list a,
+.footer__contact a {
+  font-size: var(--fs-small);
+  text-decoration: none;
+}
+
+.footer__list a:hover,
+.footer__contact a:hover {
+  text-decoration: underline;
+}
+
+.footer__risk {
+  border: 1px solid var(--panel-line);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 var(--r) var(--r) 0;
+  background: var(--panel-2);
+  padding: 1rem 1.15rem;
+}
+
+.footer__risk p {
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+  max-width: 96ch;
+}
+
+.footer__legal {
+  padding-block: 1.5rem 2rem;
+  border-top: 1px solid var(--panel-line);
+  margin-top: 1.5rem;
+}
+
+.footer__legal p {
+  font-size: var(--fs-micro);
+  color: var(--on-panel-soft);
+}
+
+.footer__copy {
+  margin-top: 0.85rem;
+}
+
+/* The token is meant to be noticed. See Placeholder.jsx. */
+.placeholder {
+  display: inline-block;
+  padding: 0.1em 0.42em;
+  border: 1px dashed var(--amber-ink);
+  border-radius: 5px;
+  background: rgba(200, 137, 43, 0.1);
+  color: var(--amber-ink);
+  font-size: 0.92em;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 760px) {
+  .footer__inner {
+    grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 0.6fr));
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Registration form
+   ------------------------------------------------------------------------- */
+
+.reg__grid {
+  display: grid;
+  gap: 1.05rem;
+}
+
+@media (min-width: 620px) {
+  .reg__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reg__full {
+    grid-column: 1 / -1;
+  }
+}
+
+.reg__consent {
+  margin-top: 1.15rem;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-size: var(--fs-micro);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.check input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.16rem;
+  /* The native box is a control edge, so it takes the accessible line. */
+  accent-color: var(--accent);
+}
+
+.check a,
+.linklike {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.linklike:hover {
+  color: var(--accent-strong);
+}
+
+.reg__server {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.15rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(168, 50, 42, 0.32);
+  border-radius: var(--r);
+  background: var(--danger-tint);
+  color: var(--danger);
+  font-size: var(--fs-micro);
+}
+
+.reg__server svg {
+  flex: none;
+  margin-top: 0.15rem;
+}
+
+.reg .btn[type='submit'] {
+  margin-top: 1.35rem;
+}
+
+.reg__note {
+  margin-top: 0.9rem;
+  font-size: var(--fs-micro);
+  color: var(--muted);
+  text-align: center;
+}
+
+/* -------------------------------------------------------------------------
+   Phone field
+   ------------------------------------------------------------------------- */
+
+.phone {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background: var(--paper);
+  border: 1px solid var(--field-line);
+  border-radius: var(--r);
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.phone:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(74, 93, 35, 0.16);
+}
+
+.phone.is-invalid {
+  border-color: var(--danger);
+}
+
+.phone__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 0.7rem 0 0.85rem;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--border);
+  border-radius: var(--r) 0 0 var(--r);
+  color: var(--ink);
+}
+
+.phone__trigger:hover {
+  background: var(--surface);
+}
+
+.phone__dial {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.phone__chevron {
+  color: var(--muted);
+  transition: transform var(--dur) var(--ease);
+}
+
+.phone__chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.phone__input {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  padding: 0 0.9rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0 var(--r) var(--r) 0;
+  outline: none;
+}
+
+.phone__input::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.flag {
+  display: block;
+  width: 22px;
+  height: 16px;
+  flex: none;
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(20, 22, 26, 0.14);
+}
+
+.flag--missing {
+  background: var(--border);
+  box-shadow: none;
+}
+
+/* ---- picker ---- */
+
+.picker {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 6px);
+  left: 0;
+  width: min(340px, calc(100vw - 2 * var(--gutter)));
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.picker__search {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.picker__search input {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+
+.picker__search input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.picker__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.35rem;
+  max-height: 280px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.picker__group {
+  padding: 0.5rem 0.65rem 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.picker__option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+}
+
+.picker__option.is-active {
+  background: var(--accent-tint);
+}
+
+.picker__option.is-selected .picker__name {
+  font-weight: 650;
+}
+
+.picker__name {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--fs-small);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.picker__dial {
+  font-size: var(--fs-micro);
+  color: var(--muted);
+  flex: none;
+}
+
+.picker__empty {
+  padding: 1.1rem 0.65rem;
+  text-align: center;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+/* -------------------------------------------------------------------------
+   Modal
+   ------------------------------------------------------------------------- */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  background: rgba(20, 22, 26, 0.55);
+}
+
+.modal__panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 680px;
+  max-height: min(84vh, 780px);
+  background: var(--paper);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal__title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.modal__close {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--ink);
+}
+
+.modal__close:hover {
+  background: var(--surface);
+}
+
+.modal__body {
+  padding: 1.3rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* -------------------------------------------------------------------------
+   Page shell + prose
+   ------------------------------------------------------------------------- */
+
+.page__head {
+  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.page__title {
+  margin-top: 0.7rem;
+}
+
+.page__lead {
+  margin-top: 1rem;
+}
+
+.prose h2,
+.prose__heading {
+  font-size: var(--fs-h3);
+  margin-top: 2rem;
+}
+
+.prose p {
+  margin-top: 0.85rem;
+  color: var(--muted);
+}
+
+.prose p:first-of-type {
+  margin-top: 1rem;
+}
+
+/* -------------------------------------------------------------------------
+   Legal
+   ------------------------------------------------------------------------- */
+
+.legal__updated {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.legal__intro {
+  margin-top: 0.85rem;
+  color: var(--ink);
+}
+
+.legal__section {
+  margin-top: 2rem;
+}
+
+.legal__heading {
+  font-size: var(--fs-h4);
+  font-weight: 650;
+  margin-bottom: 0.5rem;
+}
+
+.legal__section p + p {
+  margin-top: 0.75rem;
+}
+
+/* -------------------------------------------------------------------------
+   Contact
+   ------------------------------------------------------------------------- */
+
+.contact {
+  display: grid;
+  gap: clamp(1.5rem, 3.5vw, 2.75rem);
+  align-items: start;
+}
+
+.contact__cards {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.contact__card {
+  padding: 1.15rem;
+}
+
+.contact__icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-sm);
+  background: var(--accent-tint);
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.contact__label {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.contact__value {
+  margin-top: 0.28rem;
+  font-size: var(--fs-small);
+  word-break: break-word;
+}
+
+.contact__note {
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+.contact__form-title {
+  font-size: var(--fs-h3);
+  margin-bottom: 1.35rem;
+}
+
+@media (min-width: 940px) {
+  .contact {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Thank you
+   ------------------------------------------------------------------------- */
+
+.ty__inner {
+  text-align: center;
+}
+
+.ty__tick {
+  display: inline-grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: var(--accent-tint);
+  color: var(--accent);
+  margin-bottom: 1.35rem;
+}
+
+.ty__lead {
+  margin-inline: auto;
+  margin-top: 0.9rem;
+}
+
+.ty__steps {
+  list-style: none;
+  margin: 2.25rem 0 0;
+  padding: 1.35rem 0 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 0.85rem;
+  text-align: left;
+}
+
+.ty__steps li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+.ty__n {
+  flex: none;
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  color: var(--amber-ink);
+}
+
+.ty .btn {
+  margin-top: 2.25rem;
+}
+
+/* -------------------------------------------------------------------------
+   Not found
+   ------------------------------------------------------------------------- */
+
+.nf__title {
+  margin-top: 0.7rem;
+}
+
+.nf__lead {
+  margin-top: 1rem;
+}
+
+.nf__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.85rem;
+}
+
+/* -------------------------------------------------------------------------
+   Ticker
+   ------------------------------------------------------------------------- */
+
+.ticker {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background: var(--panel);
+  border-block: 1px solid var(--panel-line);
+  overflow: hidden;
+}
+
+.ticker__viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  /* Fades the strip into the edges so items do not appear to pop in and out
+     at the boundary. */
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 92%, transparent);
+}
+
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 64s linear infinite;
+}
+
+.ticker__group {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.ticker__item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.7rem 1.35rem;
+  white-space: nowrap;
+  border-right: 1px solid var(--panel-line);
+}
+
+.ticker__symbol {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  color: var(--on-panel);
+}
+
+.ticker__price {
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+.ticker__change {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+}
+
+.ticker__change.is-up {
+  color: var(--chart-up);
+}
+
+.ticker__change.is-down {
+  color: var(--chart-down);
+}
+
+.ticker__flag {
+  display: flex;
+  align-items: center;
+  flex: none;
+  padding: 0 0.9rem;
+  border-left: 1px solid var(--panel-line);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.625rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+/* The track holds two identical copies; translating by half its own width
+   lands the second copy exactly where the first began, so the loop has no
+   visible seam. */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Inner-page hero - About, FAQ
+   ------------------------------------------------------------------------- */
+
+.page-hero {
+  padding-block: clamp(1.75rem, 3vw, 2.75rem) clamp(1.5rem, 2.75vw, 2.25rem);
+}
+
+/* About opens on the tinted band so the hero reads as a distinct opening
+   rather than as the first of the rows beneath it. */
+.page-hero--surface {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.page-hero__inner {
+  display: grid;
+  gap: clamp(2rem, 4.5vw, 3.5rem);
+  align-items: center;
+}
+
+.page-hero__inner--solo {
+  max-width: var(--wrap-narrow);
+}
+
+.page-hero__title {
+  margin-top: 0.8rem;
+}
+
+.page-hero__lead {
+  margin-top: 1.05rem;
+}
+
+.page-hero__visual {
+  min-width: 0;
+}
+
+/* The FAQ illustration. Sized by its own width/height attributes so the space
+   is reserved before it loads and the headline beside it never shifts. */
+.page-hero__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 940px) {
+  .page-hero__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+
+  .page-hero__inner--solo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Market dashboard - the About hero's panel
+   ------------------------------------------------------------------------- */
+
+.dashboard {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-xl);
+  padding: clamp(1.15rem, 2.5vw, 1.5rem);
+  box-shadow:
+    0 1px 2px rgba(18, 21, 12, 0.4),
+    0 24px 60px -28px rgba(18, 21, 12, 0.55);
+  color: var(--on-panel);
+}
+
+.dashboard__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.dashboard__market {
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+.dashboard__quote {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 0.85rem 0.65rem;
+}
+
+.dashboard__symbol {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.008em;
+  color: var(--on-panel);
+}
+
+.dashboard__name {
+  margin-top: 0.15rem;
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+.dashboard__figures {
+  text-align: right;
+}
+
+.dashboard__value {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--on-panel);
+}
+
+.dashboard__change {
+  margin-top: 0.2rem;
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.dashboard__change.is-up,
+.dashboard__tile-change.is-up {
+  color: var(--chart-up);
+}
+
+.dashboard__change.is-down,
+.dashboard__tile-change.is-down {
+  color: var(--chart-down);
+}
+
+.dashboard__period {
+  color: var(--on-panel-muted);
+  font-weight: 450;
+}
+
+.dashboard__chart {
+  height: 126px;
+  margin-bottom: 0.4rem;
+}
+
+.dashboard__timeframes {
+  display: flex;
+  gap: 0.25rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+/* Four tiles across, so the row reads as a watchlist rather than as four
+   more rows of the same table. */
+.dashboard__tiles {
+  list-style: none;
+  margin: 0;
+  padding: 0.8rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.dashboard__tiles li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-sm);
+  background: var(--panel-2);
+}
+
+.dashboard__tile-symbol {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  color: var(--on-panel);
+}
+
+.dashboard__tile-change {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+}
+
+@media (min-width: 560px) {
+  .dashboard__tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Principles strip - About
+   ------------------------------------------------------------------------- */
+
+.principles {
+  padding-block: 1.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.principles__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.principles__list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: var(--fs-small);
+  color: var(--ink);
+}
+
+.principles__mark {
+  flex: none;
+  margin-top: 0.25rem;
+  color: var(--accent);
+}
+
+/* The FAQ strip carries one negative - "we never ask for card details" - and
+   a tick against it would invert the meaning. */
+.principles__mark--no {
+  color: var(--danger);
+}
+
+@media (min-width: 760px) {
+  .principles__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 2rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .principles__list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* -------------------------------------------------------------------------
+   About + FAQ panels
+   The dark siblings of the hero panel, one per claim.
+   ------------------------------------------------------------------------- */
+
+.about-panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-xl);
+  padding: clamp(1.15rem, 2.5vw, 1.5rem);
+  box-shadow:
+    0 1px 2px rgba(18, 21, 12, 0.4),
+    0 24px 60px -28px rgba(18, 21, 12, 0.5);
+  color: var(--on-panel);
+}
+
+.about-panel__head {
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+/* ---- data: four markets, each with its series ---- */
+
+.about-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.about-rows li {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr auto auto;
+  align-items: center;
+  gap: 0.85rem;
+  padding-block: 0.7rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.about-rows li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.about-rows__symbol {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  color: var(--on-panel);
+}
+
+.about-rows__chart {
+  height: 26px;
+  min-width: 0;
+}
+
+.about-rows__price {
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+.about-rows__change {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  min-width: 3.6rem;
+  text-align: right;
+}
+
+.about-rows__change.is-up {
+  color: var(--chart-up);
+}
+
+.about-rows__change.is-down {
+  color: var(--chart-down);
+}
+
+/* ---- boundary: what we are not ---- */
+
+.about-not {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.about-not li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-block: 0.72rem;
+  border-bottom: 1px solid var(--panel-line);
+  font-size: var(--fs-small);
+  color: var(--on-panel-muted);
+}
+
+.about-not li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.about-not__mark {
+  flex: none;
+}
+
+.about-not li:not(.about-not__yes) .about-not__mark {
+  color: var(--chart-down);
+}
+
+.about-not__yes {
+  margin-top: 0.5rem;
+  padding-top: 0.9rem !important;
+  border-top: 1px solid var(--panel-line);
+  color: var(--on-panel) !important;
+  font-weight: 600;
+}
+
+.about-not__yes .about-not__mark {
+  color: var(--chart-up);
+}
+
+/* The hero's panel is all affirmations, so every mark is a tick and the text
+   sits at full contrast rather than the muted tone the negations use. */
+.about-not--principles li {
+  color: var(--on-panel);
+  align-items: flex-start;
+}
+
+.about-not--principles .about-not__mark {
+  color: var(--chart-up);
+  margin-top: 0.2rem;
+}
+
+/* ---- correction record: the standards, shown rather than claimed ---- */
+
+.about-corrections {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.about-corrections li {
+  display: grid;
+  grid-template-columns: 3.6rem 1fr;
+  gap: 0.85rem;
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.about-corrections li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.about-corrections__when {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  color: var(--on-panel-muted);
+}
+
+.about-corrections__body {
+  font-size: var(--fs-small);
+  color: var(--on-panel);
+}
+
+/* The superseded reading is kept and struck, not deleted - which is exactly
+   what the section beside it says happens. */
+.about-corrections__body.is-original {
+  color: var(--on-panel-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--chart-down);
+}
+
+/* ---- process: inputs into a reviewed brief ---- */
+
+.about-flow {
+  display: grid;
+  gap: 0.7rem;
+  justify-items: center;
+  padding-top: 1rem;
+}
+
+.about-flow__inputs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.about-flow__inputs li {
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-pill);
+  background: var(--panel-2);
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+.about-flow__arrow {
+  width: 2px;
+  height: 18px;
+  background: linear-gradient(180deg, var(--panel-line), var(--chart-up));
+}
+
+.about-flow__stage {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r);
+  background: var(--panel-2);
+  text-align: center;
+}
+
+.about-flow__stage--end {
+  border-color: rgba(147, 217, 79, 0.4);
+  background: rgba(147, 217, 79, 0.09);
+}
+
+.about-flow__stage-title {
+  display: block;
+  font-size: var(--fs-small);
+  font-weight: 650;
+  color: var(--on-panel);
+}
+
+.about-flow__stage-sub {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: var(--fs-micro);
+  color: var(--on-panel-muted);
+}
+
+/* ---- the FAQ hero's short answers ---- */
+
+.short-answers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.short-answers li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding-block: 0.78rem;
+  border-bottom: 1px solid var(--panel-line);
+  font-size: var(--fs-small);
+  color: var(--on-panel);
+}
+
+.short-answers li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.short-answers__mark {
+  flex: none;
+  margin-top: 0.2rem;
+}
+
+.short-answers__mark.is-yes {
+  color: var(--chart-up);
+}
+
+.short-answers__mark.is-no {
+  color: var(--chart-down);
+}
+
+/* -------------------------------------------------------------------------
+   About - the four claims
+   ------------------------------------------------------------------------- */
+
+.about-row {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3.25rem);
+  align-items: center;
+}
+
+.about-row + .about-row {
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+.about-row__n {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  color: var(--amber-ink);
+}
+
+.about-row__title {
+  margin-top: 0.5rem;
+  font-size: var(--fs-h3);
+}
+
+.about-row__body {
+  margin-top: 0.85rem;
+  color: var(--muted);
+}
+
+.about-row__visual {
+  min-width: 0;
+}
+
+@media (min-width: 940px) {
+  .about-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  /* Alternating sides, so four rows in a column do not read as a list of
+     four identical blocks. */
+  .about-row--flip .about-row__copy {
+    order: 2;
+  }
+
+  .about-row--flip .about-row__visual {
+    order: 1;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Reduced motion.
+   The three-selector .reveal rule is not optional: html.js .reveal has
+   specificity (0,2,1) and would otherwise keep content hidden for
+   reduced-motion users on a JS-enabled browser.
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  html.js .reveal,
+  html.js .reveal[data-revealed='true'] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* The ticker is decorative motion, so it stops rather than sliding. Both
+     copies stay in the DOM and the strip simply shows the first of them. */
+  .ticker__track {
+    animation: none;
+    transform: none;
+  }
+
+  .chart__dot {
+    display: none;
+  }
+}
