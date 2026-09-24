@@ -27,10 +27,6 @@ export default function HeroVisual() {
   return (
     <div className="market-panel">
       <div className="market-panel__head">
-        <span className="badge-sample">
-          <span className="badge-sample__dot" aria-hidden="true" />
-          Illustrative data
-        </span>
         <span className="market-panel__market">{featuredMarket.market}</span>
       </div>
 

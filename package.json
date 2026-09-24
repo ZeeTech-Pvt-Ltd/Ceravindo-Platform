@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/build.mjs",
-    "images": "node scripts/make-og.mjs && node scripts/make-illustrations.mjs",
+    "images": "node scripts/make-og.mjs && node scripts/make-illustrations.mjs && node scripts/optimise-images.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },

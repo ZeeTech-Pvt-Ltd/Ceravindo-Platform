@@ -68,7 +68,22 @@ export default function About() {
               </Reveal>
 
               <Reveal className="about-row__visual" delay={80}>
-                <AboutVisual kind={section.visual} />
+                {section.image ? (
+                  // Supplied artwork. Width and height come from the source so
+                  // the row reserves its space before the image loads - without
+                  // them the whole row jumps as each one arrives.
+                  <img
+                    className="about-row__image"
+                    src={section.image.src}
+                    alt={section.image.alt}
+                    width={section.image.width}
+                    height={section.image.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <AboutVisual kind={section.visual} />
+                )}
               </Reveal>
             </div>
           ))}

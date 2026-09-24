@@ -11,9 +11,9 @@ import { marketRows, formatPrice, formatChange } from '../data/market.js'
  * Under prefers-reduced-motion the animation is switched off in CSS and the
  * row wraps instead, so the figures stay readable rather than sliding past.
  *
- * Same provenance rule as the hero panel: these figures come from
- * src/data/market.js and are generated, not fetched. The "Illustrative" label
- * travels with them.
+ * The figures come from src/data/market.js and are generated, not fetched.
+ * The sr-only line above keeps that fact available to a screen reader; there
+ * is no visible label, at the site owner's request.
  */
 function TickerRow({ ariaHidden }) {
   return (
@@ -43,7 +43,6 @@ export default function Ticker() {
           <TickerRow ariaHidden />
         </div>
       </div>
-      <span className="ticker__flag">Illustrative</span>
     </section>
   )
 }

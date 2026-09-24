@@ -1,4 +1,4 @@
-import { candles, marketRows, flowBars } from '../data/market.js'
+import { candles, marketRows } from '../data/market.js'
 
 /**
  * The backdrop behind a closing call to action.
@@ -10,8 +10,13 @@ import { candles, marketRows, flowBars } from '../data/market.js'
  *
  *   candles  the homepage     - the market view
  *   line     About            - a single series, the research view
- *   bars     FAQ              - net flow, the "what the data is" view
+ *   bars     FAQ              - a filled area, the softest of the four
  *   grid     Contact          - a network, the "how to reach us" view
+ *
+ * The FAQ band was a dense bar chart and read as static rather than as a
+ * chart - seventy-odd alternating green and red stripes at this width is
+ * noise, not data. It is a smooth filled area now: the calmest of the four,
+ * which suits the page that sits under it.
  *
  * Purely decorative. None carries labels, an axis, or a figure a reader could
  * take as data, which is why this is the one visual on the site with no
@@ -86,32 +91,36 @@ function Line() {
   )
 }
 
-function Bars() {
-  // The long series, not the 14-bar card one - see the note on flowBars.
-  const y = scale(flowBars, H * 2)
-  const mid = H / 2
-  const slot = W / flowBars.length
-  const bodyW = Math.max(slot * 0.52, 3)
+function Area() {
+  // A second market's series, not the first: the About band already draws the
+  // first one as a bare line, and two pages showing the same curve would read
+  // as the same backdrop rather than as two.
+  const series = marketRows[2].series
+  const y = scale(series)
+  const step = W / (series.length - 1)
+  const d = series.map((v, i) => `${i ? 'L' : 'M'} ${(i * step).toFixed(1)} ${y(v).toFixed(1)}`).join(' ')
+  const area = `${d} L ${W} ${H} L 0 ${H} Z`
 
   return (
-    <g opacity="0.55">
-      {flowBars.map((v, i) => {
-        const x = i * slot + slot / 2
-        const rising = v >= 0
-        const h = Math.max(Math.abs(y(v) - mid), 3)
-        return (
-          <rect
-            key={i}
-            x={x - bodyW / 2}
-            y={rising ? mid - h : mid}
-            width={bodyW}
-            height={h}
-            rx="1.5"
-            fill={rising ? 'var(--chart-up)' : 'var(--chart-down)'}
-          />
-        )
-      })}
-    </g>
+    <>
+      <defs>
+        <linearGradient id="cta-area" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--chart-up)" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="var(--chart-up)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill="url(#cta-area)" />
+      <path
+        d={d}
+        fill="none"
+        stroke="var(--chart-up)"
+        strokeWidth="3.5"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+        opacity="0.55"
+        vectorEffect="non-scaling-stroke"
+      />
+    </>
   )
 }
 
@@ -139,7 +148,7 @@ function Network() {
   )
 }
 
-const VARIANTS = { candles: Candles, line: Line, bars: Bars, grid: Network }
+const VARIANTS = { candles: Candles, line: Line, bars: Area, grid: Network }
 
 export default function FinalCtaBackdrop({ variant = 'candles' }) {
   const Drawing = VARIANTS[variant] ?? Candles

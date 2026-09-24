@@ -46,10 +46,7 @@ export default function RiskVisual() {
   return (
     <div className="risk-visual">
       <div className="risk-visual__head">
-        <span className="badge-sample badge-sample--light">
-          <span className="badge-sample__dot" aria-hidden="true" />
-          Risk · illustrative
-        </span>
+        <span className="badge-sample badge-sample--light">Risk</span>
       </div>
 
       <div className="risk-visual__chart">

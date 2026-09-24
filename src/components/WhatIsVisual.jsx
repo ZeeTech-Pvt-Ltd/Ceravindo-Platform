@@ -24,10 +24,7 @@ export default function WhatIsVisual() {
   return (
     <div className="brief-card">
       <div className="brief-card__head">
-        <span className="badge-sample">
-          <span className="badge-sample__dot" aria-hidden="true" />
-          Brief · illustrative
-        </span>
+        <span className="badge-sample">Brief</span>
         <span className="brief-card__symbol">{row.symbol}</span>
       </div>
 

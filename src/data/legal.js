@@ -18,12 +18,16 @@
 // this is not forgotten.
 // =========================================================
 
+import { SUPPORT_EMAIL, SITE_LABEL } from './site.js'
+
+/* The support address, the domain and the support hours are known, so they
+   are written into the prose directly rather than left as tokens. Only the
+   three values that come from the operator - the registered entity, its ABN
+   and its office - stay flagged. */
 export const LEGAL_PLACEHOLDERS = {
   ENTITY: '[LEGAL ENTITY NAME]',
   ABN: '[ABN / ACN]',
-  EMAIL: '[SUPPORT EMAIL]',
   OFFICE: '[REGISTERED OFFICE]',
-  HOURS: '[SUPPORT HOURS]',
 }
 
 export const LEGAL_LINKS = [
@@ -80,7 +84,7 @@ export const LEGAL_DOCS = {
       {
         heading: 'Access, correction and removal',
         body: [
-          `You can ask to see the information we hold about you, ask us to correct it, or ask us to delete it. Write to ${LEGAL_PLACEHOLDERS.EMAIL} and we will respond within a reasonable period.`,
+          `You can ask to see the information we hold about you, ask us to correct it, or ask us to delete it. Write to ${SUPPORT_EMAIL} and we will respond within a reasonable period.`,
           'If you believe we have handled your information improperly and you are not satisfied with our response, you can raise the matter with the Office of the Australian Information Commissioner.',
         ],
       },
@@ -93,7 +97,7 @@ export const LEGAL_DOCS = {
       {
         heading: 'Who to contact',
         body: [
-          `This site is operated by ${LEGAL_PLACEHOLDERS.ENTITY}, ${LEGAL_PLACEHOLDERS.ABN}, registered office ${LEGAL_PLACEHOLDERS.OFFICE}. Privacy questions go to ${LEGAL_PLACEHOLDERS.EMAIL}.`,
+          `${SITE_LABEL} is operated by ${LEGAL_PLACEHOLDERS.ENTITY}, ${LEGAL_PLACEHOLDERS.ABN}, registered office ${LEGAL_PLACEHOLDERS.OFFICE}. Privacy questions go to ${SUPPORT_EMAIL}.`,
         ],
       },
     ],
@@ -156,7 +160,7 @@ export const LEGAL_DOCS = {
       {
         heading: 'Contact',
         body: [
-          `Questions about these terms go to ${LEGAL_PLACEHOLDERS.EMAIL}. This site is operated by ${LEGAL_PLACEHOLDERS.ENTITY}, ${LEGAL_PLACEHOLDERS.ABN}.`,
+          `Questions about these terms go to ${SUPPORT_EMAIL}. ${SITE_LABEL} is operated by ${LEGAL_PLACEHOLDERS.ENTITY}, ${LEGAL_PLACEHOLDERS.ABN}.`,
         ],
       },
     ],

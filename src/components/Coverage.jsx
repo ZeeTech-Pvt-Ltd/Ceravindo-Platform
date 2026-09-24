@@ -51,7 +51,6 @@ export default function Coverage() {
                     </div>
                     <p className={`coverage__change tnum${up ? ' is-up' : ' is-down'}`}>
                       {formatChange(row.change)}
-                      <span className="coverage__period"> illustrative</span>
                     </p>
                   </>
                 )}

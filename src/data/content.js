@@ -19,10 +19,11 @@
 // =========================================================
 import { SUPPORT_EMAIL, SITE, SITE_LABEL } from './site.js'
 
-/* Numbers the operator must supply before launch. `null` means "not yet
-   provided" and renders as a flagged token, never as a guess. */
+/* A figure the operator must supply before launch. `null` means "not yet
+   provided" and renders as a flagged token, never as a guess. Support hours
+   was the other one and is now known - it lives on the contact card, where it
+   is displayed. */
 export const MIN_DEPOSIT_AUD = null
-export const SUPPORT_HOURS = null
 
 export const NAV = [
   { label: 'Home', href: '/' },
@@ -143,8 +144,6 @@ export const METHOD = {
       cannot: 'Time an entry. Knowing that a day matters is not knowing what it will do.',
     },
   ],
-  footnote:
-    'Model output is probabilistic. It is sometimes wrong, and when it is, the error stays visible in the record rather than being quietly revised. Any brief that reads as certain is being read wrong.',
 }
 
 export const COVERAGE = {
@@ -260,7 +259,7 @@ export const PAGE_CTA = {
   },
   faq: {
     title: 'Still not answered?',
-    body: 'Send us the question and we will come back to you during business hours.',
+    body: 'Send us the question and we will come back to you - support runs around the clock.',
     label: 'Contact us',
     href: '/contact',
   },
@@ -286,10 +285,21 @@ export const ABOUT = {
   /* `visual` picks the panel beside the section - see AboutVisuals.jsx. Each
      section makes a different claim, so each gets a different drawing rather
      than the same chart four times. */
+  /* A section renders `image` if it has one, and its `visual` panel otherwise.
+     The two that carry photographs do so because they are the two claims a
+     picture supports better than a diagram: who this is for, and how it is
+     produced. "What we are not" and "How the AI is used" are about limits, and
+     a limit is clearer drawn than photographed. */
   sections: [
     {
       title: 'What we are',
       visual: 'data',
+      image: {
+        src: '/about2.webp',
+        alt: 'Two people looking at a phone together, with a Bitcoin price chart floating above them',
+        width: 1400,
+        height: 1042,
+      },
       body: 'Ceravindo gathers public market data across crypto, foreign exchange, equities and commodities, and publishes written research briefs. Each brief carries its finding, the evidence behind it, the confidence the model holds, and the conditions under which the reading would be wrong.',
     },
     {
@@ -300,6 +310,12 @@ export const ABOUT = {
     {
       title: 'Editorial standards',
       visual: 'correction',
+      image: {
+        src: '/about4.webp',
+        alt: 'A person working at a laptop with floating cards showing a gauge, a bar chart and a settings icon',
+        width: 1309,
+        height: 1201,
+      },
       body: 'Every figure we publish is sourced. Where the model is uncertain, we say so rather than rounding to a confident-sounding number. Where a published reading turns out to be wrong, the correction is recorded against the original rather than replacing it. We do not publish testimonials we cannot verify, and we do not publish performance figures at all.',
     },
     {
@@ -320,11 +336,15 @@ export const CONTACT = {
     { label: 'Email us', value: SUPPORT_EMAIL, href: `mailto:${SUPPORT_EMAIL}` },
     { label: 'Website', value: SITE_LABEL, href: SITE },
     { label: 'Based in', value: 'Australia' },
-    { label: 'Support hours', value: null },
+    {
+      label: 'Support hours',
+      value: '24/7, 365 days a year',
+      note: 'Round-the-clock assistance',
+    },
   ],
   formHeading: 'Send us a message',
   formNote:
-    'Send a message and we will come back to you during business hours. No card details, bank details or passwords are collected anywhere on this site.',
+    'Send a message and we will come back to you. Support runs around the clock. No card details, bank details or passwords are collected anywhere on this site.',
 }
 
 export const THANK_YOU = {

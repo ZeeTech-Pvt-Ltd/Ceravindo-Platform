@@ -173,18 +173,6 @@ export const drawdownPct = (() => {
  * no figures a reader could take as data - which is why it is the one chart
  * on the site without an illustrative badge. Do not put numbers near it.
  */
-/**
- * A longer net-flow series for the closing CTA's bar backdrop.
- *
- * Separate from onChainFlows, which is 14 bars for a card. At 1440px wide
- * those 14 render as blocks rather than as a chart - a backdrop needs enough
- * bars to read as data.
- */
-export const flowBars = (() => {
-  const rnd = seeded(seedFrom('cta-flow-bars'))
-  return Array.from({ length: 72 }, () => Math.round((rnd() - 0.5) * 200))
-})()
-
 export const candles = (() => {
   const rnd = seeded(seedFrom('final-candles'))
   let price = 100

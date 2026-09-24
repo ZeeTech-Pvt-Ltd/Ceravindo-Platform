@@ -1,7 +1,6 @@
 import { RISK } from '../data/content.js'
 import RiskVisual from './RiskVisual.jsx'
 import Reveal from './Reveal.jsx'
-import { Alert } from './icons.jsx'
 
 /**
  * The risk band.
@@ -23,9 +22,6 @@ export default function RiskFirst() {
     <section className="risk" id="risk">
       <div className="wrap">
         <Reveal className="risk__head">
-          <span className="risk__icon" aria-hidden="true">
-            <Alert width={22} height={22} />
-          </span>
           <h2 className="risk__title">{RISK.title}</h2>
         </Reveal>
 

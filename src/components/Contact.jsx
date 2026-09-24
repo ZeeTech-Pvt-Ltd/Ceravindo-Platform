@@ -3,7 +3,7 @@ import RegistrationForm from './RegistrationForm.jsx'
 import Placeholder from './Placeholder.jsx'
 import FinalCta from './FinalCta.jsx'
 import Reveal from './Reveal.jsx'
-import { Mail, Globe, Clock } from './icons.jsx'
+import { Mail, Globe, Clock, Pin } from './icons.jsx'
 
 /**
  * Contact page.
@@ -15,7 +15,7 @@ import { Mail, Globe, Clock } from './icons.jsx'
  * deliberate trade here: a lead that arrives through the same pipeline as
  * every other lead is one the operator can actually see.
  */
-const ICONS = { Email: Mail, 'Based in': Globe, 'Support hours': Clock }
+const ICONS = { 'Email us': Mail, Website: Globe, 'Based in': Pin, 'Support hours': Clock }
 
 export default function Contact() {
   return (
@@ -43,11 +43,12 @@ export default function Contact() {
                       {card.value === null ? (
                         <Placeholder label={card.label}>{`[${card.label.toUpperCase()}]`}</Placeholder>
                       ) : card.href ? (
-                        <a href={`${card.href}${card.value}`}>{card.value}</a>
+                        <a href={card.href}>{card.value}</a>
                       ) : (
                         card.value
                       )}
                     </p>
+                    {card.note && <p className="contact__card-note">{card.note}</p>}
                   </li>
                 )
               })}

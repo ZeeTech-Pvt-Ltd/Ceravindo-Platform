@@ -15,11 +15,12 @@
 // =========================================================
 import { FAQ, MIN_DEPOSIT_AUD } from './content.js'
 
-// Re-exported so the many files that import these from seo.js keep working,
-// while site.js stays the one place the values are written. See its header
-// for why they are not defined here.
-export { SITE, BRAND, OG_IMAGE, SUPPORT_EMAIL, LOCALE_OG } from './site.js'
-import { SITE, BRAND, OG_IMAGE } from './site.js'
+// Imported for use here, and re-exported so the files that already import
+// these from seo.js keep working - site.js stays the one place the values are
+// written. `export ... from` on its own would re-export without binding them
+// locally, which is a reference error the moment one is used below.
+import { SITE, BRAND, OG_IMAGE, SUPPORT_EMAIL, LOCALE_OG } from './site.js'
+export { SITE, BRAND, OG_IMAGE, SUPPORT_EMAIL, LOCALE_OG }
 
 const INDEX = 'index, follow, max-image-preview:large, max-snippet:-1'
 const NOINDEX = 'noindex, nofollow'
@@ -185,7 +186,7 @@ export const seo = {
   contact: {
     title: `Contact ${BRAND} | Support for Australian Users`,
     description:
-      'Contact the Ceravindo team with a question about our market research platform. Send a message from the form or email support - we reply during business hours.',
+      'Contact the Ceravindo team with a question about our market research platform. Send a message from the form or email support - we answer around the clock.',
     robots: INDEX,
     canonical: `${SITE}/contact`,
     ogImageAlt: `Contact ${BRAND}`,

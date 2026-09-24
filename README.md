@@ -18,7 +18,8 @@ npm install
 npm run dev       # dev server on http://localhost:5173
 npm run build     # full SSG build into dist/
 npm run preview   # note: Vite's preview applies an SPA fallback — see below
-npm run images    # regenerate og-image.png + apple-touch-icon.png
+npm run images    # regenerate og-image.png, favicon art, FAQ illustration, and
+                  # convert anything in source-images/ to public/*.webp
 npm run lint      # oxlint
 ```
 
@@ -85,6 +86,26 @@ leads route to this brand rather than a shared funnel, and the error codes in
 `FIELD_BY_ERROR` resolve the way the table assumes. The visitor's IP is added by
 the relay, not sent by the client.
 
+## Images
+
+Two kinds, handled two ways.
+
+**Generated** — the favicon art, the OG card, the apple-touch icon and the FAQ
+illustration are all drawn in SVG inside `scripts/` and rasterised by sharp.
+Nothing is downloaded, so the palette always matches `src/index.css`. Run
+`npm run images` after changing a token.
+
+**Supplied** — photographs and illustrations that arrive by hand go in
+`source-images/`, never in `public/`. `npm run images` converts them to WebP at
+1400px into `public/`, and the build copies `public/` verbatim — so a 1.5 MB
+PNG left in there ships on every deploy even though the page loads the WebP.
+That is not hypothetical: four supplied PNGs once added 6.2 MB to a 12 MB
+build. `verify-ssg.mjs` now fails if a stray PNG or anything over 400 KB
+reaches `dist/`.
+
+Images referenced from `src/data/content.js` carry explicit `width` and
+`height` so the row reserves space before they load.
+
 ## Content rules
 
 The site is written to be defensible, and the copy rules are load-bearing rather
@@ -122,9 +143,10 @@ Chrome at the path in `CHROME` at the top of each script.
 npm run build
 node .arttmp/serve-dist.mjs 4180 &     # serve dist/ the way Vercel will
 
-node .arttmp/verify-ssg.mjs            # static: files, head, JSON-LD, banned claims
+node .arttmp/verify-ssg.mjs            # static: files, head, JSON-LD, banned claims, asset weight
 node .arttmp/verify-routes.mjs         # every route cold: title, canonical, hydration
 node .arttmp/verify-a11y.mjs           # contrast, reduced motion, picker keyboard
+node .arttmp/verify-responsive.mjs     # 5 widths x 5 routes: tap targets, text size, clipping
 node .arttmp/test-form.mjs             # validation, wire format, error paths, honeypot
 
 node .arttmp/check.mjs http://localhost:5173/   # screenshot + structural dump (dev)

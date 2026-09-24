@@ -105,6 +105,13 @@ export const Mail = (p) => (
   </svg>
 )
 
+export const Pin = (p) => (
+  <svg {...base} {...p}>
+    <path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z" />
+    <circle cx="12" cy="10" r="2.6" />
+  </svg>
+)
+
 export const Globe = (p) => (
   <svg {...base} {...p}>
     <circle cx="12" cy="12" r="9" />

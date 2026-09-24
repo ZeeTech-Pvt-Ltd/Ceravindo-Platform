@@ -58,10 +58,6 @@ export default function ResearchMethod() {
                     <Icon width={19} height={19} />
                   </span>
                   <h3 className="input-card__title">{item.title}</h3>
-                  {/* The figures below are generated. The section used to
-                      carry one note for all four cards; it is per card now,
-                      so the label travels with the chart it applies to. */}
-                  <span className="badge-sample badge-sample--tight">Illustrative</span>
                 </div>
 
                 <InputVisual kind={item.visual} />
@@ -81,9 +77,6 @@ export default function ResearchMethod() {
           })}
         </div>
 
-        <Reveal>
-          <p className="inputs__footnote">{METHOD.footnote}</p>
-        </Reveal>
       </div>
     </section>
   )

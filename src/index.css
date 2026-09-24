@@ -891,7 +891,9 @@ html.js .reveal[data-revealed='true'] {
   padding: 0.28rem 0.6rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--r-pill);
-  font-size: 0.6875rem;
+  /* 12px, not 11: below that an uppercase label is genuinely hard to read on
+     a phone, and this is the floor rather than a preference. */
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -904,15 +906,6 @@ html.js .reveal[data-revealed='true'] {
   border-radius: 50%;
   background: var(--amber);
   flex: none;
-}
-
-/* Sits at the end of a card's header row rather than on its own line. */
-.badge-sample--tight {
-  flex: none;
-  margin-left: auto;
-  padding: 0.2rem 0.52rem;
-  font-size: 0.625rem;
-  letter-spacing: 0.07em;
 }
 
 .market-panel__market {
@@ -996,7 +989,15 @@ html.js .reveal[data-revealed='true'] {
 }
 
 .tf {
-  padding: 0.3rem 0.7rem;
+  /* A real tap target, not a text-sized one. These sit four-in-a-row on a
+     panel that is full width on a phone, so there is room for them to be
+     comfortable and no reason for them not to be. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  min-width: 42px;
+  padding: 0.35rem 0.8rem;
   border: 0;
   border-radius: var(--r-sm);
   background: transparent;
@@ -1091,14 +1092,37 @@ html.js .reveal[data-revealed='true'] {
   gap: 0.65rem;
 }
 
-.trust__item + .trust__item::before {
-  content: '';
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--sage);
-  margin-right: 0.95rem;
-  flex: none;
+/* The separator only works while the strip runs as one row. Once it wraps,
+   each line starts with a dot that reads as a stray mark rather than as a
+   divider between two items, so below that width the grid carries the
+   separation instead. */
+@media (min-width: 900px) {
+  .trust__item + .trust__item::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--sage);
+    margin-right: 0.95rem;
+    flex: none;
+  }
+}
+
+@media (max-width: 899px) {
+  .trust__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem 1.25rem;
+    justify-items: start;
+    max-width: 30rem;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 460px) {
+  .trust__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* -------------------------------------------------------------------------
@@ -1497,16 +1521,6 @@ html.js .reveal[data-revealed='true'] {
   color: var(--on-panel-muted);
 }
 
-.inputs__footnote {
-  margin-top: 2rem;
-  padding: 1.1rem 1.3rem;
-  border-left: 3px solid var(--amber);
-  background: var(--surface);
-  border-radius: 0 var(--r) var(--r) 0;
-  font-size: var(--fs-small);
-  color: var(--muted);
-}
-
 @media (min-width: 760px) {
   .inputs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1606,7 +1620,9 @@ html.js .reveal[data-revealed='true'] {
   display: flex;
   justify-content: space-between;
   margin-top: 0.65rem;
-  font-size: var(--fs-micro);
+  /* 12px, matching the badges - these are axis labels, and at 11px they were
+     the smallest text on the site. */
+  font-size: 0.75rem;
   color: var(--on-panel-muted);
 }
 
@@ -1634,6 +1650,23 @@ html.js .reveal[data-revealed='true'] {
   font-size: var(--fs-micro);
 }
 
+/* On a narrow card the three columns squeeze the middle one to a few
+   characters and the event name is cut off. Below that point the row becomes
+   two lines instead: time and impact on one, the name across the full width
+   underneath. A truncated event name tells the reader nothing. */
+@media (max-width: 420px) {
+  .events li {
+    grid-template-columns: auto 1fr;
+    row-gap: 0.2rem;
+  }
+
+  .events__label {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    white-space: normal;
+  }
+}
+
 .events__when {
   color: var(--on-panel-muted);
 }
@@ -1649,7 +1682,7 @@ html.js .reveal[data-revealed='true'] {
   padding: 0.1rem 0.45rem;
   border-radius: var(--r-pill);
   border: 1px solid var(--panel-line);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 650;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -1721,11 +1754,6 @@ html.js .reveal[data-revealed='true'] {
   color: var(--danger);
 }
 
-.coverage__period {
-  color: var(--muted);
-  font-weight: 450;
-}
-
 .coverage__body {
   margin-top: 0.85rem;
   padding-top: 0.85rem;
@@ -1761,17 +1789,6 @@ html.js .reveal[data-revealed='true'] {
   align-items: center;
   gap: 0.85rem;
   margin-bottom: 1.75rem;
-}
-
-.risk__icon {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  flex: none;
-  border-radius: var(--r);
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
 }
 
 .risk__title {
@@ -1876,8 +1893,8 @@ html.js .reveal[data-revealed='true'] {
 .risk-visual__marks {
   position: absolute;
   inset: auto 0 0 0;
-  height: 1rem;
-  font-size: 0.6875rem;
+  height: 1.15rem;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
@@ -2174,8 +2191,14 @@ html.js .reveal[data-revealed='true'] {
   color: var(--on-panel-soft);
 }
 
+/* Padded to a tappable height. A footer link is a control, and at its text
+   size it is 19px tall - under half of what a thumb needs. The negative
+   margin keeps the visual rhythm unchanged. */
 .footer__list a,
 .footer__contact a {
+  display: inline-block;
+  padding-block: 0.4rem;
+  margin-block: -0.4rem;
   font-size: var(--fs-small);
   text-decoration: none;
 }
@@ -2665,9 +2688,25 @@ html.js .reveal[data-revealed='true'] {
 }
 
 .contact__value {
-  margin-top: 0.28rem;
+  margin-top: 0.1rem;
   font-size: var(--fs-small);
   word-break: break-word;
+}
+
+/* Same reason as the footer links: padded to a tappable height, with the
+   margin pulled back so the card's spacing is unchanged. */
+.contact__value a {
+  display: inline-block;
+  padding-block: 0.4rem;
+  margin-block: -0.4rem;
+}
+
+/* A second line under a card's value, where the value alone is a figure that
+   needs a word beside it. */
+.contact__card-note {
+  margin-top: 0.15rem;
+  font-size: var(--fs-micro);
+  color: var(--muted);
 }
 
 .contact__note {
@@ -2826,20 +2865,6 @@ html.js .reveal[data-revealed='true'] {
 
 .ticker__change.is-down {
   color: var(--chart-down);
-}
-
-.ticker__flag {
-  display: flex;
-  align-items: center;
-  flex: none;
-  padding: 0 0.9rem;
-  border-left: 1px solid var(--panel-line);
-  background: rgba(255, 255, 255, 0.05);
-  font-size: 0.625rem;
-  font-weight: 650;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--amber);
 }
 
 /* The track holds two identical copies; translating by half its own width
@@ -3398,6 +3423,15 @@ html.js .reveal[data-revealed='true'] {
 
 .about-row__visual {
   min-width: 0;
+}
+
+/* Supplied artwork, not a panel. No border or radius: about4 is a cut-out
+   with a soft edge that a radius would clip, and about2 carries its own
+   rounded frame. */
+.about-row__image {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 @media (min-width: 940px) {

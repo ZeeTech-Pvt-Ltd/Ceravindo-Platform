@@ -1,7 +1,7 @@
 import Logo from './Logo.jsx'
 import { NAV, FOOTER, RISK_WARNING } from '../data/content.js'
 import { LEGAL_LINKS } from '../data/legal.js'
-import { SUPPORT_EMAIL } from '../data/seo.js'
+import { SUPPORT_EMAIL, SITE_LABEL } from '../data/site.js'
 
 /**
  * Footer. Carries the risk warning and the legal column on every route -
@@ -20,6 +20,10 @@ export default function Footer() {
           <p className="footer__blurb">{FOOTER.blurb}</p>
           <p className="footer__contact">
             <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+            <span className="footer__sep" aria-hidden="true">
+              {' · '}
+            </span>
+            <a href="/">{SITE_LABEL}</a>
           </p>
         </div>
 
