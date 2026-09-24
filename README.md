@@ -144,6 +144,8 @@ npm run build
 node .arttmp/serve-dist.mjs 4180 &     # serve dist/ the way Vercel will
 
 node .arttmp/verify-ssg.mjs            # static: files, head, JSON-LD, banned claims, asset weight
+node .arttmp/verify-seo.mjs            # titles, descriptions, heading outline, sitemap, robots
+node .arttmp/verify-links.mjs          # every href and asset URL resolves; anchors resolve
 node .arttmp/verify-routes.mjs         # every route cold: title, canonical, hydration
 node .arttmp/verify-a11y.mjs           # contrast, reduced motion, picker keyboard
 node .arttmp/verify-responsive.mjs     # 5 widths x 5 routes: tap targets, text size, clipping

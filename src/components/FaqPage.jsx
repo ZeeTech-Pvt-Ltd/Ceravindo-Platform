@@ -66,6 +66,13 @@ export default function FaqPage() {
 
       <section className="section faq-page">
         <div className="wrap wrap--narrow">
+          {/* The accordion renders its questions as h3, and this page passes
+              heading={false} because the hero's h1 already says what the list
+              is. That left the outline jumping h1 to h3 - which is the level
+              a screen reader navigates by, so the skip is real even though
+              nothing looks wrong. This heading restores the h2 step and is
+              never seen. */}
+          <h2 className="sr-only">All questions</h2>
           <Faq heading={false} />
         </div>
       </section>
