@@ -2035,6 +2035,24 @@ html.js .reveal[data-revealed='true'] {
   align-items: start;
 }
 
+/* Grid items refuse to shrink below their content's min-content width by
+   default, and at 320px something inside these two is wider than the column.
+   The result was the whole section sitting 16px past the viewport with its
+   right edge cut off. min-width: 0 lets the column take the width it is
+   given; the text inside wraps instead of pushing. */
+.register__inner > * {
+  min-width: 0;
+}
+
+/* Belt and braces for the copy: a single long token (an email, a URL someone
+   pastes into a placeholder) cannot widen the column past the screen if it is
+   allowed to break. */
+.register__copy h2,
+.register__copy .lead,
+.register__copy .checks span {
+  overflow-wrap: break-word;
+}
+
 .register__form {
   background: var(--paper);
   border: 1px solid var(--border);
