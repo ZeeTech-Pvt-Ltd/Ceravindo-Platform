@@ -21,7 +21,7 @@ export default function RegistrationForm({ variant = 'signup', submitLabel }) {
   const { openLegal } = useLegal()
   const form = useLeadForm({ variant })
 
-  const label = submitLabel ?? (variant === 'contact' ? 'Send message' : 'Create your research account')
+  const label = submitLabel ?? (variant === 'contact' ? 'Send message' : 'Create your Account')
 
   const fieldProps = (name) => ({
     id: name,

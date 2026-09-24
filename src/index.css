@@ -2350,6 +2350,10 @@ html.js .reveal[data-revealed='true'] {
 
 .reg .btn[type='submit'] {
   margin-top: 1.35rem;
+  /* The submit button is full width and its label is centred, so horizontal
+     padding only sets how much room the text has before it starts to crowd
+     the edges. 10px is the value asked for. */
+  padding-inline: 10px;
 }
 
 .reg__note {
@@ -2357,6 +2361,35 @@ html.js .reveal[data-revealed='true'] {
   font-size: var(--fs-micro);
   color: var(--muted);
   text-align: center;
+}
+
+/* On a 320px screen the card's content box is 280px, and the form's text was
+   set from the page's 17px body size - which is large for that column and
+   left the field text crowding the placeholder. Everything inside the form
+   drops one step, and the inputs land on 16px.
+   16px specifically, not 15: iOS Safari zooms the whole page in when a field
+   is focused whose text is smaller than that, which is a worse outcome than
+   the size it was avoiding. Do not take the inputs below this without
+   accepting the zoom. */
+@media (max-width: 400px) {
+  .reg .field input,
+  .reg .phone__input,
+  .reg .picker__search input {
+    font-size: 1rem;
+  }
+
+  .reg .field > label:not(.check),
+  .reg .check,
+  .reg .picker__group,
+  .reg .picker__option,
+  .reg__note {
+    font-size: 0.75rem;
+  }
+
+  .reg .picker__name,
+  .reg .picker__dial {
+    font-size: 0.8125rem;
+  }
 }
 
 /* -------------------------------------------------------------------------
