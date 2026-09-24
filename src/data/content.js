@@ -329,22 +329,29 @@ export const ABOUT = {
 export const CONTACT = {
   title: 'Contact Ceravindo',
   lead: 'Questions about the research, your account, or the data behind a brief.',
-  /* `href` is the complete URL, not a prefix - the email address is only
-     known once, in src/data/site.js, and building the mailto here is what
-     keeps it from being typed twice. */
-  cards: [
-    { label: 'Email us', value: SUPPORT_EMAIL, href: `mailto:${SUPPORT_EMAIL}` },
-    { label: 'Website', value: SITE_LABEL, href: SITE },
-    { label: 'Based in', value: 'Australia' },
-    {
-      label: 'Support hours',
-      value: '24/7, 365 days a year',
-      note: 'Round-the-clock assistance',
-    },
-  ],
+  /* The hero's panel. `href` is the complete URL, not a prefix - the email
+     address is only written once, in src/data/site.js, and building the
+     mailto here is what keeps it from being typed twice. */
+  panel: {
+    hours: { value: '24/7, 365 days a year', note: 'Round-the-clock assistance' },
+    channels: [
+      { label: 'Email', value: SUPPORT_EMAIL, href: `mailto:${SUPPORT_EMAIL}` },
+      { label: 'Website', value: SITE_LABEL, href: SITE },
+      { label: 'Based in', value: 'Australia' },
+    ],
+  },
   formHeading: 'Send us a message',
-  formNote:
-    'Send a message and we will come back to you. Support runs around the clock. No card details, bank details or passwords are collected anywhere on this site.',
+  /* Sits beside the form, answering the question a form always raises. The
+     same three steps the confirmation page shows, so the two agree about
+     what happens after submit. */
+  nextSteps: {
+    title: 'What happens next',
+    steps: [
+      'We read your message and check the details you sent.',
+      'You hear back from us, usually about setting up your watchlist.',
+      'You start receiving research briefs for the markets you follow.',
+    ],
+  },
 }
 
 export const THANK_YOU = {

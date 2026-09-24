@@ -2701,78 +2701,189 @@ html.js .reveal[data-revealed='true'] {
    Contact
    ------------------------------------------------------------------------- */
 
-.contact {
-  display: grid;
-  gap: clamp(1.5rem, 3.5vw, 2.75rem);
-  align-items: start;
+/* ---- the hero's support panel ---- */
+
+.support-panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--r-xl);
+  padding: clamp(1.15rem, 2.5vw, 1.5rem);
+  box-shadow:
+    0 1px 2px rgba(18, 21, 12, 0.4),
+    0 24px 60px -28px rgba(18, 21, 12, 0.5);
+  color: var(--on-panel);
 }
 
-.contact__cards {
-  list-style: none;
-  margin: 0 0 1.25rem;
-  padding: 0;
-  display: grid;
-  gap: 0.85rem;
+.support-panel__head {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--panel-line);
 }
 
-.contact__card {
-  padding: 1.15rem;
-}
-
-.contact__icon {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: var(--r-sm);
-  background: var(--accent-tint);
-  color: var(--accent);
-  margin-bottom: 0.75rem;
-}
-
-.contact__label {
+.support-panel__status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.15rem;
   font-size: var(--fs-micro);
   font-weight: 650;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--chart-up);
 }
 
-.contact__value {
-  margin-top: 0.1rem;
+.support-panel__dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--chart-up);
+  box-shadow: 0 0 0 4px rgba(147, 217, 79, 0.18);
+}
+
+.support-panel__hours {
+  margin-top: 0.55rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--on-panel);
+}
+
+.support-panel__hours-note {
+  margin-top: 0.2rem;
   font-size: var(--fs-small);
+  color: var(--on-panel-muted);
+}
+
+.support-panel__channels {
+  margin: 1.2rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--panel-line);
+  display: grid;
+}
+
+.support-panel__channels > div {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.85rem;
+  align-items: baseline;
+  padding-block: 0.5rem;
+}
+
+.support-panel__channels dt {
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-panel-muted);
+}
+
+.support-panel__channels dd {
+  margin: 0;
+  font-size: var(--fs-small);
+  color: var(--on-panel);
   word-break: break-word;
 }
 
-/* Same reason as the footer links: padded to a tappable height, with the
-   margin pulled back so the card's spacing is unchanged. */
-.contact__value a {
+/* Padded to a tappable height, with the margin pulled back so the rows keep
+   their spacing - the same treatment the footer links get. */
+.support-panel__channels a {
   display: inline-block;
-  padding-block: 0.4rem;
-  margin-block: -0.4rem;
+  padding-block: 0.35rem;
+  margin-block: -0.35rem;
+  color: var(--on-panel);
+  text-decoration: none;
 }
 
-/* A second line under a card's value, where the value alone is a figure that
-   needs a word beside it. */
-.contact__card-note {
-  margin-top: 0.15rem;
-  font-size: var(--fs-micro);
-  color: var(--muted);
+.support-panel__channels a:hover {
+  color: var(--chart-up);
+  text-decoration: underline;
 }
 
-.contact__note {
-  font-size: var(--fs-small);
-  color: var(--muted);
+@media (max-width: 420px) {
+  .support-panel__channels > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+  }
 }
 
-.contact__form-title {
+/* ---- the form, and what happens after it ---- */
+
+.contact-section__inner {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: start;
+}
+
+.contact-section__inner > * {
+  min-width: 0;
+}
+
+.contact-section__form {
+  padding: clamp(1.35rem, 3vw, 2rem);
+}
+
+.contact-section__title {
   font-size: var(--fs-h3);
   margin-bottom: 1.35rem;
 }
 
+.contact-section__aside-title {
+  font-size: var(--fs-h4);
+  font-weight: 650;
+}
+
+.contact-steps {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.05rem;
+}
+
+.contact-steps li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.85rem;
+  align-items: baseline;
+}
+
+.contact-steps__n {
+  font-family: var(--font-display);
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  color: var(--amber-ink);
+}
+
+.contact-steps li > span:last-child {
+  font-size: var(--fs-small);
+  color: var(--muted);
+}
+
+.contact-section__reassure {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-small);
+  color: var(--ink);
+}
+
+.contact-section__reassure-mark {
+  flex: none;
+  margin-top: 0.25rem;
+  color: var(--accent);
+}
+
 @media (min-width: 940px) {
-  .contact {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  .contact-section__inner {
+    /* The form is what the page is for; the steps are the reassurance beside
+       it, so the form takes the larger share. */
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   }
 }
 

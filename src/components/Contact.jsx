@@ -1,67 +1,64 @@
 import { CONTACT, PAGE_CTA } from '../data/content.js'
+import PageHero from './PageHero.jsx'
 import RegistrationForm from './RegistrationForm.jsx'
-import Placeholder from './Placeholder.jsx'
+import SupportPanel from './SupportPanel.jsx'
 import FinalCta from './FinalCta.jsx'
 import Reveal from './Reveal.jsx'
-import { Mail, Globe, Clock, Pin } from './icons.jsx'
+import { Check } from './icons.jsx'
 
 /**
  * Contact page.
  *
- * Renders the same RegistrationForm the homepage uses, so there is one
- * implementation of the form on the site rather than two that drift. The
- * contact channels sit beside it rather than replacing it - the sibling
- * projects that did the same thing also had no message field, which was a
- * deliberate trade here: a lead that arrives through the same pipeline as
- * every other lead is one the operator can actually see.
+ * Opens with a hero like every other inner page, and the panel beside it
+ * carries the contact details. That is a change from the old layout, which
+ * stacked four cards next to the form: the stack ran four cards tall while
+ * the form ended two thirds of the way up, so the column beneath the form was
+ * dead space and the page read as two unrelated halves.
+ *
+ * The form gets the page to itself below the fold, with a short list beside
+ * it saying what happens after submit - the question a form always raises -
+ * and that list is the same three steps the confirmation page shows.
+ *
+ * The form is the same RegistrationForm the homepage renders, from one
+ * component, so the two cannot drift.
  */
-const ICONS = { 'Email us': Mail, Website: Globe, 'Based in': Pin, 'Support hours': Clock }
-
 export default function Contact() {
   return (
     <>
-      <section className="section page">
-        <div className="wrap">
-        <header className="page__head">
-          <p className="eyebrow">Contact</p>
-          <h1 className="page__title">{CONTACT.title}</h1>
-          <p className="lead page__lead">{CONTACT.lead}</p>
-        </header>
+      <PageHero
+        eyebrow="Contact"
+        title={CONTACT.title}
+        lead={CONTACT.lead}
+        tone="surface"
+        visual={<SupportPanel />}
+      />
 
-        <div className="contact">
-          <Reveal className="contact__side">
-            <ul className="contact__cards">
-              {CONTACT.cards.map((card) => {
-                const Icon = ICONS[card.label] ?? Mail
-                return (
-                  <li className="card contact__card" key={card.label}>
-                    <span className="contact__icon" aria-hidden="true">
-                      <Icon width={20} height={20} />
-                    </span>
-                    <p className="contact__label">{card.label}</p>
-                    <p className="contact__value">
-                      {card.value === null ? (
-                        <Placeholder label={card.label}>{`[${card.label.toUpperCase()}]`}</Placeholder>
-                      ) : card.href ? (
-                        <a href={card.href}>{card.value}</a>
-                      ) : (
-                        card.value
-                      )}
-                    </p>
-                    {card.note && <p className="contact__card-note">{card.note}</p>}
-                  </li>
-                )
-              })}
-            </ul>
-            <p className="contact__note">{CONTACT.formNote}</p>
-          </Reveal>
-
-          <Reveal className="contact__form card" delay={80}>
-            <h2 className="contact__form-title">{CONTACT.formHeading}</h2>
+      <section className="section contact-section">
+        <div className="wrap contact-section__inner">
+          <Reveal className="contact-section__form card">
+            <h2 className="contact-section__title">{CONTACT.formHeading}</h2>
             <RegistrationForm variant="contact" submitLabel="Send message" />
           </Reveal>
+
+          <Reveal className="contact-section__aside" delay={80}>
+            <h2 className="contact-section__aside-title">{CONTACT.nextSteps.title}</h2>
+            <ol className="contact-steps">
+              {CONTACT.nextSteps.steps.map((step, i) => (
+                <li key={step}>
+                  <span className="contact-steps__n tnum" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+
+            <p className="contact-section__reassure">
+              <Check className="contact-section__reassure-mark" width={17} height={17} />
+              <span>No card details, bank details or passwords, ever.</span>
+            </p>
+          </Reveal>
         </div>
-      </div>
       </section>
 
       <FinalCta variant="grid" {...PAGE_CTA.contact} />

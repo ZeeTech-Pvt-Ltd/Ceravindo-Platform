@@ -160,9 +160,13 @@ export default function RegistrationForm({ variant = 'signup', submitLabel }) {
         {form.submitting ? 'Creating your account…' : label}
       </button>
 
+      {/* The same four fields are collected either way; only the reason
+          differs, and saying "to set up your account" under a contact form
+          describes a step the visitor is not taking. */}
       <p className="reg__note">
-        We collect your name, email and phone number to set up your account. No card details, bank
-        details or passwords.
+        {variant === 'contact'
+          ? 'We collect your name, email and phone number so we can reply. No card details, bank details or passwords.'
+          : 'We collect your name, email and phone number to set up your account. No card details, bank details or passwords.'}
       </p>
     </form>
   )
