@@ -41,7 +41,7 @@ export const HERO = {
     'Every signal shown with its evidence and its confidence',
     'General information only, never personal advice',
   ],
-  primaryCta: { label: 'Create your research account', href: '#register' },
+  primaryCta: { label: 'Create Your Account', href: '#register' },
 }
 
 /* The method is a homepage section in its own right now (see METHOD below),
@@ -246,7 +246,7 @@ export const FAQ = [
 export const FINAL_CTA = {
   title: 'Start reading before you decide',
   body: 'Create an account to build a watchlist and start receiving research briefs. No card details, no broker connection, no password.',
-  primaryCta: { label: 'Create your research account', href: '#register' },
+  primaryCta: { label: 'Create Your Account', href: '#register' },
 }
 
 /* The closing band carries the same design on every page; only the words and
@@ -255,7 +255,7 @@ export const PAGE_CTA = {
   about: {
     title: 'The only way to judge it is to read one',
     body: 'Create an account and start receiving briefs for the markets you choose.',
-    label: 'Create your research account',
+    label: 'Create Your Account',
   },
   faq: {
     title: 'Still not answered?',
@@ -266,7 +266,7 @@ export const PAGE_CTA = {
   contact: {
     title: 'Start reading before you decide',
     body: 'Create an account to build a watchlist and start receiving research briefs.',
-    label: 'Create your research account',
+    label: 'Create Your Account',
   },
 }
 
@@ -305,6 +305,12 @@ export const ABOUT = {
     {
       title: 'What we are not',
       visual: 'boundary',
+      image: {
+        src: '/about5.webp',
+        alt: 'A person surrounded by crossed-out cards labelled broker, financial adviser, fund manager, custodian and other roles Ceravindo does not take',
+        width: 1400,
+        height: 1042,
+      },
       body: 'Ceravindo is not a broker, not a financial adviser, not a fund manager and not a custodian. We do not hold client money, do not connect to a trading account, and do not place orders. We do not manage anyone’s portfolio and we do not tell anyone what to buy or sell.',
     },
     {
@@ -321,6 +327,12 @@ export const ABOUT = {
     {
       title: 'How the AI is used',
       visual: 'process',
+      image: {
+        src: '/about6.webp',
+        alt: 'A robot at a laptop connected to cards showing a market chart, source documents and verification checks',
+        width: 1400,
+        height: 1042,
+      },
       body: 'The model summarises and interprets data that is already public. It does not receive non-public information, does not have access to any reader’s account, and does not act on anything it produces. Its output is reviewed against its sources before publication, and a brief that cannot be traced back to its evidence is not published.',
     },
   ],
@@ -340,16 +352,23 @@ export const CONTACT = {
       { label: 'Based in', value: 'Australia' },
     ],
   },
-  formHeading: 'Send us a message',
-  /* Sits beside the form, answering the question a form always raises. The
-     same three steps the confirmation page shows, so the two agree about
-     what happens after submit. */
+  /* The heading and the button say "get in touch", not "send a message".
+     They used to say "send us a message", which promised a message box the
+     form does not have - it collects name, email and phone, and the relay
+     behind it takes exactly six fields with no message among them. Offering
+     the box would collect something that goes nowhere, so the copy describes
+     what actually happens instead. */
+  formHeading: 'Get in touch',
   nextSteps: {
     title: 'What happens next',
+    /* The contact flow, not the signup one. These were the confirmation
+       page's steps verbatim - "setting up your watchlist", "receiving
+       research briefs" - which describe creating an account to someone who
+       came here to ask a question. */
     steps: [
-      'We read your message and check the details you sent.',
-      'You hear back from us, usually about setting up your watchlist.',
-      'You start receiving research briefs for the markets you follow.',
+      'We check the details you sent.',
+      'We come back to you by email or phone.',
+      'You ask us anything about the research, your account, or a brief.',
     ],
   },
 }

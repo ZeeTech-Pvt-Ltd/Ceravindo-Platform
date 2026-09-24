@@ -166,6 +166,36 @@
 }
 
 /* -------------------------------------------------------------------------
+   Grid children must be allowed to shrink
+   -------------------------------------------------------------------------
+   A grid item's default min-width is auto, which means it refuses to shrink
+   below its content's min-content width. On a narrow screen that pushes the
+   whole item past the viewport instead of letting its text wrap: it is what
+   put the register section 16px off a 320px screen, and the hero's copy,
+   market panel and closing button with it.
+
+   min-width: 0 restores the shrink. It only lowers a floor - for content that
+   already fits, nothing changes. Any grid added later belongs in this list.
+   ------------------------------------------------------------------------- */
+
+.hero__inner > *,
+.page-hero__inner > *,
+.register__inner > *,
+.contact-section__inner > *,
+.about-row > *,
+.risk__grid > *,
+.whatis > *,
+.final__inner > *,
+.footer__inner > *,
+.inputs > *,
+.coverage > *,
+.steps > *,
+.pipeline > *,
+.principles__list > * {
+  min-width: 0;
+}
+
+/* -------------------------------------------------------------------------
    Reset + base
    ------------------------------------------------------------------------- */
 
@@ -310,9 +340,9 @@ p {
   align-items: center;
   gap: 0.55rem;
   font-family: var(--font-sans);
-  font-size: var(--fs-micro);
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--accent);
 }
@@ -417,6 +447,16 @@ p {
     border-color var(--dur) var(--ease),
     color var(--dur) var(--ease),
     transform var(--dur) var(--ease);
+}
+
+/* Labels are kept on one line by default so a button never breaks mid-word
+   beside its icon. Past a phone width that has to give: "Create your research
+   account" is wider than a 320px screen, and nowrap there pushes the button
+   out of the section rather than wrapping it. */
+@media (max-width: 520px) {
+  .btn {
+    white-space: normal;
+  }
 }
 
 .btn:hover {
@@ -748,13 +788,34 @@ html.js .reveal[data-revealed='true'] {
   color: var(--ink);
 }
 
+/* An overlay, not an inline drawer: it must not change the page's height,
+   because growing the header pushes the whole document down and drags the
+   scroll position with it. Fixed below the header, so the header itself never
+   moves. Rendered as a sibling of <header> rather than inside it - see the
+   note in Header.jsx about backdrop-filter. */
 .header__drawer {
-  border-top: 1px solid var(--border);
+  position: fixed;
+  top: calc(var(--header-h) + 1px);
+  left: 0;
+  right: 0;
+  z-index: 58;
+  max-height: calc(100dvh - var(--header-h) - 1px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
 }
 
 .header__drawer[hidden] {
   display: none;
+}
+
+.header__scrim {
+  position: fixed;
+  inset: calc(var(--header-h) + 1px) 0 0 0;
+  z-index: 55;
+  background: rgba(20, 22, 26, 0.42);
 }
 
 .header__drawer-nav {
@@ -2035,15 +2096,6 @@ html.js .reveal[data-revealed='true'] {
   align-items: start;
 }
 
-/* Grid items refuse to shrink below their content's min-content width by
-   default, and at 320px something inside these two is wider than the column.
-   The result was the whole section sitting 16px past the viewport with its
-   right edge cut off. min-width: 0 lets the column take the width it is
-   given; the text inside wraps instead of pushing. */
-.register__inner > * {
-  min-width: 0;
-}
-
 /* Belt and braces for the copy: a single long token (an email, a URL someone
    pastes into a placeholder) cannot widen the column past the screen if it is
    allowed to break. */
@@ -2816,10 +2868,6 @@ html.js .reveal[data-revealed='true'] {
   align-items: start;
 }
 
-.contact-section__inner > * {
-  min-width: 0;
-}
-
 .contact-section__form {
   padding: clamp(1.35rem, 3vw, 2rem);
 }
@@ -2911,6 +2959,10 @@ html.js .reveal[data-revealed='true'] {
   margin-top: 0.9rem;
 }
 
+/* Centred with the rest of the page. The number and its step travel together
+   as one unit rather than the number sitting in a left column, because a
+   fixed column would leave the numbers stranded away from the text they
+   belong to once the rows are centred. */
 .ty__steps {
   list-style: none;
   margin: 2.25rem 0 0;
@@ -2918,15 +2970,16 @@ html.js .reveal[data-revealed='true'] {
   border-top: 1px solid var(--border);
   display: grid;
   gap: 0.85rem;
-  text-align: left;
 }
 
 .ty__steps li {
   display: flex;
   align-items: baseline;
+  justify-content: center;
   gap: 0.85rem;
   font-size: var(--fs-small);
   color: var(--muted);
+  text-align: center;
 }
 
 .ty__n {
@@ -3609,6 +3662,26 @@ html.js .reveal[data-revealed='true'] {
 
   .about-row--flip .about-row__visual {
     order: 1;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Narrow phones
+   -------------------------------------------------------------------------
+   The body text tokens drop one step below 400px, the same reduction the form
+   gets on its own, so the whole page reads at a phone scale rather than just
+   the fields. Headings are left alone: they are already fluid and land at a
+   sensible size on their own.
+
+   --fs-micro stops at 12px, which is the floor. Anything smaller fails the
+   responsive audit, and it would be right to fail it.
+   ------------------------------------------------------------------------- */
+
+@media (max-width: 400px) {
+  :root {
+    --fs-body: 1rem;
+    --fs-small: 0.875rem;
+    --fs-micro: 0.75rem;
   }
 }
 

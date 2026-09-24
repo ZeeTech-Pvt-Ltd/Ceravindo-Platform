@@ -37,7 +37,7 @@ export default function Contact() {
         <div className="wrap contact-section__inner">
           <Reveal className="contact-section__form card">
             <h2 className="contact-section__title">{CONTACT.formHeading}</h2>
-            <RegistrationForm variant="contact" submitLabel="Send message" />
+            <RegistrationForm variant="contact" submitLabel="Create Your Account" />
           </Reveal>
 
           <Reveal className="contact-section__aside" delay={80}>

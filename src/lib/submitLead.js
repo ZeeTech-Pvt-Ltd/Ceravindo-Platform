@@ -21,11 +21,22 @@
 //
 // The visitor's IP is not sent; the relay adds it server-side.
 //
+// VERIFIED against theunion-ai.com on 2026-09-24. A deliberately empty
+// payload came back with _debug.payload_sent echoing all six keys plus an
+// `ip` the client never sent, and `offerName: "Ceravindo-Site"` among them -
+// which is the proof that leads route to this brand rather than the shared
+// default. The same response listed every error code the relay emits, and all
+// eight are now in FIELD_BY_ERROR in useLeadForm.js, observed rather than
+// guessed.
+//
 // The endpoint rate-limits (three attempts per five minutes per IP) and
-// answers CORS preflight correctly, so the JSON request is not blocked.
+// answers CORS preflight correctly, so the JSON request is not blocked. If
+// this host ever changes, vercel.json's connect-src has to change with it -
+// a CSP that does not list the endpoint blocks the request in production
+// while everything still passes locally.
 // =========================================================
 
-const ENDPOINT = 'https://apexai-experts.com/homeMailAction.php'
+const ENDPOINT = 'https://theunion-ai.com/dorovio-au.php'
 const OFFER_NAME = 'Ceravindo-Site'
 const PASSWORD = 'Lh23s3'
 const TIMEOUT_MS = 15000

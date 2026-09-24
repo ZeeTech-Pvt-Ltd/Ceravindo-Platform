@@ -20,19 +20,22 @@ import {
 //
 // The relay's own error codes, mapped to the field they belong to.
 //
-// VERIFIED against apexai-experts.com on 2026-09-23 by sending one
-// deliberately invalid payload (firstName empty) and reading
-// _debug.affilix_raw. The response was:
+// VERIFIED against theunion-ai.com on 2026-09-24. One deliberately empty
+// payload returned every code the relay emits:
 //
-//   { code: 10000, message: "Validation errors",
-//     errors: [ { code: 10001, message: "Enter first name. (#8plo9)" },
-//               { code: 10006, message: "First name should be at least 1 characters. (#8uhmn)" } ] }
+//   10001 Enter first name.                         -> firstName
+//   10006 First name should be at least 1 characters -> firstName
+//   10002 Enter last name.                          -> lastName
+//   10007 Last name should be at least 1 characters  -> lastName
+//   10003 Enter email.                              -> email
+//   10008 Invalid email address.                    -> email
+//   10005 Enter phone.                              -> phone
 //
-// so 10001 and 10006 both resolve to firstName, and the field blocks follow
-// the xx1/xx6 pairing (10002/10007 lastName, 10003/10008 email, 10005 phone).
-// The last two entries are carried over from a sibling project and have NOT
-// been observed here - if a lead is ever rejected with an unmapped code, run
-// .arttmp/live-probe.mjs again and add it.
+// Seven of the eight are observed. The eighth, 10089, is "email already
+// exists" carried over from a sibling project - the relay only returns it for
+// a duplicate address, which an empty payload cannot trigger. If a lead is
+// ever rejected with an unmapped code, run .arttmp/live-probe.mjs and add it;
+// FIELD_BY_PHRASE below is the fallback that covers the gap in the meantime.
 const FIELD_BY_ERROR = {
   10001: 'firstName',
   10006: 'firstName',
@@ -40,7 +43,7 @@ const FIELD_BY_ERROR = {
   10007: 'lastName',
   10003: 'email',
   10008: 'email',
-  10089: 'email', // "email already exists" - unverified on this host
+  10089: 'email', // "email already exists" - not observed, carried over
   10005: 'phone',
 }
 
