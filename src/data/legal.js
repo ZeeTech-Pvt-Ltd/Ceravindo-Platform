@@ -69,10 +69,11 @@ export const LEGAL_DOCS = {
         ],
       },
       {
-        heading: 'Third-party requests from this site',
+        heading: 'Analytics and third-party requests',
         body: [
-          'This site loads no analytics, no advertising pixels and no third-party scripts. Fonts are served from this domain rather than from a font CDN, so opening a page here does not send your IP address to anyone else.',
-          'The country selector in the phone field is set from your browser timezone. It makes no network request to determine where you are.',
+          'We use Google Analytics to understand how this site is used. It records things like the pages you view, how long you stay, how you arrived here, and your device type, and it sends that information to Google, which can include your IP address. Google processes that data under its own terms, and we do not use it to identify you personally or to build advertising profiles.',
+          'We do not run advertising pixels, and we do not sell or share your personal information with third parties.',
+          'Fonts are served from this domain rather than from a font CDN, and the country selector in the phone field is set from your browser timezone. Neither makes a network request to determine who you are.',
         ],
       },
       {

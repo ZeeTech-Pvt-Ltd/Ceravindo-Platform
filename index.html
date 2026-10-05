@@ -15,11 +15,31 @@
          (prerendered HTML included). -->
     <script>document.documentElement.classList.add('js')</script>
 
-    <!-- Fonts are self-hosted, so the page makes no third-party request at
-         runtime - which is what lets the privacy policy say so plainly. -->
+    <!-- Fonts are self-hosted, so the page makes no font-related third-party
+         request at runtime. Analytics is the one deliberate exception - see
+         the gtag block below and the privacy policy, which must stay in step
+         with it. -->
     <link rel="preload" href="/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Search Console verification, and Google Analytics 4.
+         Both sit ABOVE the Primary metadata marker, so scripts/build.mjs
+         copies them into every prerendered page. A tag added below the
+         marker would only ever exist on the dev server. The CSP in
+         vercel.json lists googletagmanager.com and google-analytics.com;
+         if the measurement ID ever changes, the policy wording in
+         src/data/legal.js moves with it. -->
+    <meta name="google-site-verification" content="Ku8FrVq3N8SnahHhlK5VUr6O0rK8-yuVi3znEbx4K_w" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCWRM3E62H"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-PCWRM3E62H');
+    </script>
 
     <!-- Primary metadata (homepage defaults; <Seo/> updates per route).
          scripts/build.mjs REPLACES everything from here down per route, so in
