@@ -3,10 +3,11 @@ import { useEffect } from 'react'
 /**
  * Reveals [data-reveal] elements as they scroll into view.
  *
- * Every element starts hidden via `html.js .reveal` in index.css and is
- * flipped by setting data-revealed="true". Running the whole thing from CSS
- * means a page with no JS keeps its content visible - the hide rule is gated
- * on the `js` class that index.html adds inline.
+ * Every element starts hidden via `.reveal` under `@media (scripting:
+ * enabled)` in app/globals.css and is flipped by setting
+ * data-revealed="true". Running the whole thing from CSS means a page with no
+ * JS keeps its content visible - the hide rule simply does not apply where
+ * scripting is unavailable.
  *
  * The observer is rebuilt on every route change because the previous route's
  * elements are gone. A safety net un-hides anything still hidden after a

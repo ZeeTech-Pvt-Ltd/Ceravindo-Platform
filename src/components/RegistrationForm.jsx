@@ -1,3 +1,5 @@
+'use client'
+
 import { useId } from 'react'
 import PhoneField from './PhoneField.jsx'
 import { useLegal } from './LegalModal.jsx'

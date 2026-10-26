@@ -5,9 +5,10 @@
 // later:
 //
 //   1. No figure appears unless the operator supplied it. Where a number is
-//      still unknown it is `null` here and rendered through <Placeholder/>,
-//      which is visible in development and neutral in production. An invented
-//      statistic on a financial site is not a placeholder - it is a claim.
+//      still unknown it is `null` here, and a null renders as nothing - the
+//      placeholder tokens that used to flag it were removed site wide. An
+//      invented statistic on a financial site is not a missing detail, it
+//      is a claim.
 //
 //   2. Every claim states its own limit. The product is described by what it
 //      does and what it cannot do, in the same breath. That is the honest
@@ -20,9 +21,9 @@
 import { SUPPORT_EMAIL, SITE, SITE_LABEL } from './site.js'
 
 /* A figure the operator must supply before launch. `null` means "not yet
-   provided" and renders as a flagged token, never as a guess. Support hours
-   was the other one and is now known - it lives on the contact card, where it
-   is displayed. */
+   provided" - it simply stays out of the copy and out of the structured
+   data, which is safer than guessing. Placeholder tokens were removed site
+   wide at the operator's request, so a null never renders as anything. */
 export const MIN_DEPOSIT_AUD = null
 
 export const NAV = [

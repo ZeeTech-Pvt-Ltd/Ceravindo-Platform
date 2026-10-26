@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { candles, marketRows, featuredMarket, TIMEFRAMES, formatPrice, formatChange } from '../data/market.js'
 

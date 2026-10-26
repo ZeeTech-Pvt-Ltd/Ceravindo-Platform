@@ -143,7 +143,7 @@ export function buildFaqPage(items = FAQ) {
 
 // ---------- Per-route configuration ----------
 //
-// The keys here are the route names App.jsx resolves and the keys
+// The keys here are the route names src/lib/metadata.js is asked for and the keys
 // scripts/build.mjs writes files for. They must stay in step with
 // scripts/prerender-entry.jsx ROUTES.
 

@@ -32,26 +32,15 @@
    ========================================================================= */
 
 /* -------------------------------------------------------------------------
-   Fonts - self-hosted latin subsets, so the page makes no third-party
-   request at runtime. That is what lets the privacy policy state plainly
-   that nothing is sent anywhere.
+   Fonts
+   -------------------------------------------------------------------------
+   There is no @font-face block here on purpose. Both faces are loaded by
+   next/font/local in app/layout.jsx, from the same two WOFF2 files that used
+   to be declared here, and exposed as --font-instrument and --font-inter.
+   They are still served from this origin - which is what keeps the privacy
+   policy's "fonts are served from this domain rather than from a font CDN"
+   true - but Next now generates the face rules and the preloads.
    ------------------------------------------------------------------------- */
-
-@font-face {
-  font-family: 'Instrument Sans';
-  src: url('/fonts/instrument-sans.woff2') format('woff2');
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('/fonts/inter.woff2') format('woff2');
-  font-weight: 400 700;
-  font-style: normal;
-  font-display: swap;
-}
 
 /* -------------------------------------------------------------------------
    Tokens
@@ -121,8 +110,8 @@
      tokens because they are separate roles, not because they differ much
      visually - Instrument Sans carries slightly more character than Inter,
      which is what keeps a heading from reading as very big body text. */
-  --font-display: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: var(--font-instrument), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Caps at 62px. The middle term is what scales: it reaches the cap around
      a 1040px viewport and shrinks below that, so the headline still fits a
@@ -614,21 +603,32 @@ p {
    readable if the script never runs.
    ------------------------------------------------------------------------- */
 
+/* Visible by default, so the prerendered HTML paints for a crawler and for a
+   visitor without JS. The animation only applies where scripting is
+   available to set data-revealed.
+
+   This used to key off a `js` class added to <html> by an inline script in
+   index.html. That worked while React mounted into an empty #root, but Next
+   renders <html> itself and hydrates its attributes - a class added before
+   hydration is a mismatch. The media query is answered by the browser rather
+   than by an attribute, so there is nothing to mismatch. */
 .reveal {
   opacity: 1;
 }
 
-html.js .reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 620ms var(--ease),
-    transform 620ms var(--ease);
-}
+@media (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 620ms var(--ease),
+      transform 620ms var(--ease);
+  }
 
-html.js .reveal[data-revealed='true'] {
-  opacity: 1;
-  transform: none;
+  .reveal[data-revealed='true'] {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* -------------------------------------------------------------------------
@@ -2307,18 +2307,6 @@ html.js .reveal[data-revealed='true'] {
   margin-top: 0.85rem;
 }
 
-/* The token is meant to be noticed. See Placeholder.jsx. */
-.placeholder {
-  display: inline-block;
-  padding: 0.1em 0.42em;
-  border: 1px dashed var(--amber-ink);
-  border-radius: 5px;
-  background: rgba(200, 137, 43, 0.1);
-  color: var(--amber-ink);
-  font-size: 0.92em;
-  font-variant-numeric: tabular-nums;
-}
-
 @media (min-width: 760px) {
   .footer__inner {
     grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 0.6fr));
@@ -3705,9 +3693,10 @@ html.js .reveal[data-revealed='true'] {
     scroll-behavior: auto;
   }
 
+  /* Matches the @media (scripting: enabled) block above, including its
+     specificity, so a reduced-motion visitor never meets a hidden section. */
   .reveal,
-  html.js .reveal,
-  html.js .reveal[data-revealed='true'] {
+  .reveal[data-revealed='true'] {
     opacity: 1;
     transform: none;
     transition: none;

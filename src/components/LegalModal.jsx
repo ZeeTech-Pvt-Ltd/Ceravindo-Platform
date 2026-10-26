@@ -1,6 +1,7 @@
+'use client'
+
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { LEGAL_DOCS } from '../data/legal.js'
-import Placeholder from './Placeholder.jsx'
 import { Close } from './icons.jsx'
 
 /**
@@ -10,9 +11,6 @@ import { Close } from './icons.jsx'
  * the full pages. Both render LEGAL_DOCS from src/data/legal.js, so the text
  * a visitor skims in the dialog is the same text the page publishes - there
  * is no second copy to fall out of date.
- *
- * The tokens render inline in both places, so the modal shows the same
- * visibly-flagged placeholders the footer does.
  */
 
 const LegalContext = createContext(null)
@@ -31,22 +29,11 @@ export function LegalBody({ doc }) {
         <section className="legal__section" key={section.heading}>
           <h2 className="legal__heading">{section.heading}</h2>
           {section.body.map((text) => (
-            <p key={text.slice(0, 32)}>{renderTokens(text)}</p>
+            <p key={text.slice(0, 32)}>{text}</p>
           ))}
         </section>
       ))}
     </>
-  )
-}
-
-/**
- * Bracketed tokens inside the prose are flagged wherever they appear, so a
- * document reads as unfinished until the operator fills them in.
- */
-function renderTokens(text) {
-  const parts = String(text).split(/(\[[A-Z][^\]]*\])/g)
-  return parts.map((part, i) =>
-    /^\[[A-Z][^\]]*\]$/.test(part) ? <Placeholder key={`${part}-${i}`}>{part}</Placeholder> : part,
   )
 }
 

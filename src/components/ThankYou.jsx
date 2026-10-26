@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import { THANK_YOU } from '../data/content.js'
 import { Check } from './icons.jsx'

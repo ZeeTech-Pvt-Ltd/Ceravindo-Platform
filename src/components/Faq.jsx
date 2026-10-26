@@ -1,3 +1,5 @@
+'use client'
+
 import { useId, useState } from 'react'
 import { FAQ } from '../data/content.js'
 import SectionHead from './SectionHead.jsx'

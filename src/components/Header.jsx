@@ -1,4 +1,7 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import Logo from './Logo.jsx'
 import { NAV } from '../data/content.js'
 import { Menu, Close } from './icons.jsx'
@@ -19,12 +22,16 @@ import { Menu, Close } from './icons.jsx'
  * descendants, so a fixed drawer inside it would position against the header
  * instead of the viewport.
  *
- * The sign-up CTA is a plain "#register" href. App.jsx intercepts it, so with
- * JS the visitor scrolls without a fragment reaching the URL bar, and from a
- * route page it goes home first. Without JS the browser's own anchor handling
- * takes over, which degrades to the right behaviour rather than a dead link.
+ * The sign-up CTA is a plain "#register" href. ScrollHandler intercepts it, so
+ * with JS the visitor scrolls without a fragment reaching the URL bar, and
+ * from a route page it goes home first. Without JS the browser's own anchor
+ * handling takes over, which degrades to the right behaviour rather than a
+ * dead link.
  */
-export default function Header({ route, onCta }) {
+export default function Header() {
+  // The App Router owns the current path. This used to arrive as a `route`
+  // prop from the hand-rolled router in App.jsx, which no longer exists.
+  const route = routeOf(usePathname() || '/')
   const [open, setOpen] = useState(false)
   const headerRef = useRef(null)
   const drawerRef = useRef(null)
@@ -89,7 +96,7 @@ export default function Header({ route, onCta }) {
           </nav>
 
           <div className="header__actions">
-            <a className="btn btn--primary header__cta" href="#register" onClick={onCta}>
+            <a className="btn btn--primary header__cta" href="#register">
               Get started
             </a>
             <button

@@ -3,24 +3,21 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Ceravindo — AI-assisted market research platform for Australian investors.",
+  "description": "Ceravindo - AI-assisted market research platform for Australian investors.",
   "scripts": {
-    "dev": "vite",
-    "build": "node scripts/build.mjs",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "images": "node scripts/make-og.mjs && node scripts/make-illustrations.mjs && node scripts/optimise-images.mjs",
-    "lint": "oxlint",
-    "preview": "vite preview"
+    "lint": "oxlint"
   },
   "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
-    "@vitejs/plugin-react": "^6.1.0",
     "oxlint": "^1.79.0",
-    "sharp": "^0.35.4",
-    "vite": "^8.2.2"
+    "sharp": "^0.35.4"
   }
 }

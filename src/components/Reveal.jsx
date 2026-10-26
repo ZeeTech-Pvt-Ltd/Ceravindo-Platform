@@ -1,7 +1,7 @@
 /**
  * Wraps content in the scroll-reveal treatment.
  *
- * This only sets the class - the actual hide/reveal lives in index.css and is
+ * This only sets the class - the actual hide/reveal lives in app/globals.css and is
  * driven by useReveal(), which flips data-revealed once the element is in
  * view. Splitting it that way keeps the "hidden only when JS is running" rule
  * in one place, so a prerendered page with no script stays fully readable.

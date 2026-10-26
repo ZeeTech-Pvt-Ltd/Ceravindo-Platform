@@ -13,6 +13,10 @@ dist-ssr
 .ssr-dist
 *.local
 
+# Next.js. `out/` is the static export; both are build output.
+.next
+out
+
 # Temp verification scripts / scratch
 .arttmp/
 

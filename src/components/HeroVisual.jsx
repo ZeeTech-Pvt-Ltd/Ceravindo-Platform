@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import MiniChart from './MiniChart.jsx'
 import { marketRows, featuredMarket, TIMEFRAMES, formatPrice, formatChange } from '../data/market.js'

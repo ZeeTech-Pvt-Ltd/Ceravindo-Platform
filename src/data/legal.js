@@ -18,17 +18,13 @@
 // this is not forgotten.
 // =========================================================
 
-import { SUPPORT_EMAIL, SITE_LABEL } from './site.js'
+import { SUPPORT_EMAIL } from './site.js'
 
-/* The support address, the domain and the support hours are known, so they
-   are written into the prose directly rather than left as tokens. Only the
-   three values that come from the operator - the registered entity, its ABN
-   and its office - stay flagged. */
-export const LEGAL_PLACEHOLDERS = {
-  ENTITY: '[LEGAL ENTITY NAME]',
-  ABN: '[ABN / ACN]',
-  OFFICE: '[REGISTERED OFFICE]',
-}
+/* No placeholders remain. The entity, ABN and office tokens were removed at
+   the operator's request, and the sentences that carried them were rewritten
+   to stand on the contact address alone - a support email is enough for a
+   visitor to reach the operator, and a bracketed token is worse than a
+   sentence that simply does not claim an entity it cannot name. */
 
 export const LEGAL_LINKS = [
   { id: 'privacy', label: 'Privacy Policy', path: '/privacy' },
@@ -98,7 +94,7 @@ export const LEGAL_DOCS = {
       {
         heading: 'Who to contact',
         body: [
-          `${SITE_LABEL} is operated by ${LEGAL_PLACEHOLDERS.ENTITY}, ${LEGAL_PLACEHOLDERS.ABN}, registered office ${LEGAL_PLACEHOLDERS.OFFICE}. Privacy questions go to ${SUPPORT_EMAIL}.`,
+          `Privacy questions go to ${SUPPORT_EMAIL}. If you believe we have handled your information improperly and you are not satisfied with our response, you can raise the matter with the Office of the Australian Information Commissioner.`,
         ],
       },
     ],
@@ -161,7 +157,7 @@ export const LEGAL_DOCS = {
       {
         heading: 'Contact',
         body: [
-          `Questions about these terms go to ${SUPPORT_EMAIL}. ${SITE_LABEL} is operated by ${LEGAL_PLACEHOLDERS.ENTITY}, ${LEGAL_PLACEHOLDERS.ABN}.`,
+          `Questions about these terms go to ${SUPPORT_EMAIL}.`,
         ],
       },
     ],
