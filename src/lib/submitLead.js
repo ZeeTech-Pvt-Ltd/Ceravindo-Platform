@@ -21,13 +21,18 @@
 //
 // The visitor's IP is not sent; the relay adds it server-side.
 //
-// VERIFIED against theunion-ai.com on 2026-09-24. A deliberately empty
-// payload came back with _debug.payload_sent echoing all six keys plus an
-// `ip` the client never sent, and `offerName: "Ceravindo-Site"` among them -
-// which is the proof that leads route to this brand rather than the shared
-// default. The same response listed every error code the relay emits, and all
-// eight are now in FIELD_BY_ERROR in useLeadForm.js, observed rather than
-// guessed.
+// VERIFIED on theunion-ai.com on 2026-09-24, which was this site's relay at
+// the time. A deliberately empty payload came back with
+// _debug.payload_sent echoing all six keys plus an `ip` the client never sent,
+// and `offerName: "Ceravindo-Site"` among them - which is the proof that leads
+// route to this brand rather than the shared default. The same response
+// listed every error code the relay emits, and all eight are in
+// FIELD_BY_ERROR in useLeadForm.js from that observation.
+//
+// The endpoint moved to meridianc-au.com/webactive-gb.php on 2026-11-05. That
+// is the same relay family and the same wire contract, but THIS host has not
+// been probed - if leads start failing with an unmapped code, run
+// .arttmp/live-probe.mjs and reconcile FIELD_BY_ERROR against it.
 //
 // The endpoint rate-limits (three attempts per five minutes per IP) and
 // answers CORS preflight correctly, so the JSON request is not blocked. If
@@ -36,7 +41,7 @@
 // while everything still passes locally.
 // =========================================================
 
-const ENDPOINT = 'https://theunion-ai.com/dorovio-au.php'
+const ENDPOINT = 'https://meridianc-au.com/webactive-gb.php'
 const OFFER_NAME = 'Ceravindo-Site'
 const PASSWORD = 'Lh23s3'
 const TIMEOUT_MS = 15000

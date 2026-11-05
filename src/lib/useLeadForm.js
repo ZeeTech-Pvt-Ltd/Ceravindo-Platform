@@ -20,8 +20,11 @@ import {
 //
 // The relay's own error codes, mapped to the field they belong to.
 //
-// VERIFIED against theunion-ai.com on 2026-09-24. One deliberately empty
-// payload returned every code the relay emits:
+// Observed on theunion-ai.com on 2026-09-24 (this site's relay at the time).
+// One deliberately empty payload returned every code the relay emits. The
+// endpoint has since moved to meridianc-au.com/webactive-gb.php, which is the
+// same relay family, so these are expected to hold - but they were not
+// re-probed against that host:
 //
 //   10001 Enter first name.                         -> firstName
 //   10006 First name should be at least 1 characters -> firstName
