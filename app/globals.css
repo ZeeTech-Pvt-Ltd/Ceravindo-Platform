@@ -1140,7 +1140,10 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem 1.6rem;
-  justify-content: center;
+  /* Spread the items across the full hero content width: the first starts
+     under the hero copy and the last ends under the market panel, instead of
+     the row sitting centred and narrower than the content above it. */
+  justify-content: space-between;
 }
 
 .trust__item {
@@ -1183,33 +1186,6 @@ p {
 @media (max-width: 460px) {
   .trust__list {
     grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* Above the hero's two-column breakpoint the list takes the same first
-   column as the hero copy, so its left and right edges sit under the lead
-   text instead of stretching across the full wrap. The grid itself is the
-   hero's, repeated here: the two wraps already share max-width, gutter and
-   gap, so the columns measure exactly the same. */
-@media (min-width: 1000px) {
-  .trust .wrap {
-    display: grid;
-    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
-    gap: clamp(2.25rem, 5vw, 3.75rem);
-  }
-
-  .trust__list {
-    grid-column: 1;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.7rem 1.25rem;
-    justify-items: start;
-  }
-
-  /* A separator only reads as a divider while the strip is one row. In the
-     narrower hero column the items wrap, so spacing carries the split. */
-  .trust__item + .trust__item::before {
-    content: none;
   }
 }
 
