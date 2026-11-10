@@ -1186,6 +1186,33 @@ p {
   }
 }
 
+/* Above the hero's two-column breakpoint the list takes the same first
+   column as the hero copy, so its left and right edges sit under the lead
+   text instead of stretching across the full wrap. The grid itself is the
+   hero's, repeated here: the two wraps already share max-width, gutter and
+   gap, so the columns measure exactly the same. */
+@media (min-width: 1000px) {
+  .trust .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    gap: clamp(2.25rem, 5vw, 3.75rem);
+  }
+
+  .trust__list {
+    grid-column: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem 1.25rem;
+    justify-items: start;
+  }
+
+  /* A separator only reads as a divider while the strip is one row. In the
+     narrower hero column the items wrap, so spacing carries the split. */
+  .trust__item + .trust__item::before {
+    content: none;
+  }
+}
+
 /* -------------------------------------------------------------------------
    What is - copy beside the brief card
    ------------------------------------------------------------------------- */
@@ -3931,16 +3958,59 @@ p {
 }
 
 .review__quote {
-  margin-top: 0.4rem;
+  margin-top: 0.5rem;
   font-size: var(--fs-small);
   color: var(--ink);
 }
 
-/* The attribution is set in amber, not muted grey, because it is the label
-   that says this is not a real customer. Making it quiet defeats it. */
-.review__name {
+/* Stars sit at the foot of the card, above the attribution. Empty stars are
+   the hairline colour; filled stars take --amber-ink, which clears text
+   contrast. The number beside them carries the same value, so the rating is
+   never read from colour alone. */
+.review__stars {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   margin-top: auto;
   padding-top: 1.25rem;
+}
+
+.stars {
+  position: relative;
+  display: inline-flex;
+  line-height: 0;
+}
+
+.stars__track,
+.stars__fill {
+  display: inline-flex;
+  gap: 0.12rem;
+}
+
+.stars__track {
+  color: var(--border);
+}
+
+.stars__fill {
+  position: absolute;
+  inset: 0;
+  color: var(--amber-ink);
+  white-space: nowrap;
+}
+
+.stars__track svg,
+.stars__fill svg {
+  flex: none;
+}
+
+.stars__value {
+  font-size: var(--fs-micro);
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.review__name {
+  margin-top: 0.35rem;
   font-size: var(--fs-micro);
   font-weight: 650;
   letter-spacing: 0.04em;

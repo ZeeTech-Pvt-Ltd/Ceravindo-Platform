@@ -134,3 +134,20 @@ export const Globe = (p) => (
     <path d="M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z" />
   </svg>
 )
+
+// Filled star for review ratings. Unlike the line icons above this one has no
+// stroke, because a half filled row is drawn by clipping a filled copy, and a
+// stroke would make the clipped edge look wrong.
+export const Star = (p) => (
+  <svg
+    width={15}
+    height={15}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+    focusable="false"
+    {...p}
+  >
+    <path d="m12 3.2 2.65 5.37 5.93.86-4.29 4.18 1.01 5.9L12 16.72l-5.3 2.79 1.01-5.9-4.29-4.18 5.93-.86L12 3.2Z" />
+  </svg>
+)

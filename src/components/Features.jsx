@@ -4,7 +4,7 @@ import Reveal from './Reveal.jsx'
 import { Chart, Layers, Compass, Shield, Activity, Refresh } from './icons.jsx'
 
 /**
- * The seven core tools.
+ * The six core tools.
  *
  * Each card carries two paragraphs: what the tool does, and the practical part
  * a reader actually cares about. They are separated visually because they

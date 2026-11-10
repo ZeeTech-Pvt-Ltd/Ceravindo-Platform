@@ -43,7 +43,7 @@ export const HERO = {
   title: 'Read The Market Before You Trade It',
   lead: 'Ceravindo studies price action, chart patterns and market mood, then explains what it sees in plain English. You get the research. You make the call.',
   checks: [
-    'Seven AI tools in one platform',
+    'Six AI tools in one platform',
     'Every signal shows its reasoning',
     'General information only, not financial advice',
   ],
@@ -68,7 +68,7 @@ export const WHAT_IS = {
   title: 'What Is Ceravindo?',
   paragraphs: [
     'Ceravindo is a research and practice platform for people who trade. It reads market data across crypto, forex, equities and commodities, then turns what it finds into a plain English brief you can actually use.',
-    'You get seven tools in one place. Analysis, chart reading, strategy building, risk planning, signals and backtesting all share the same market data, so the picture stays consistent from one screen to the next.',
+    'You get six tools in one place. Analysis, chart reading, strategy building, risk planning and signals all share the same market data, so the picture stays consistent from one screen to the next.',
     'What you will not get is a promise. Ceravindo does not place trades, does not hold your money and does not tell you what to buy. It shows you the reasoning, then leaves the decision where it belongs.',
   ],
 }
@@ -83,7 +83,7 @@ export const WHAT_IS = {
 
 export const FEATURES = {
   eyebrow: 'Features',
-  title: 'Seven Tools, One Workspace',
+  title: 'Six Tools, One Workspace',
   lead: 'Every tool below runs on the same market data. Use one, or use them together.',
   items: [
     {
@@ -127,13 +127,6 @@ export const FEATURES = {
       body: 'The model flags setups it finds interesting, with the evidence behind each one and the conditions that would cancel it.',
       detail:
         'A signal here is a starting point for your own research, not an instruction. It is not a prediction, and it is not financial advice.',
-    },
-    {
-      icon: 'refresh',
-      title: 'Strategy Backtesting',
-      body: 'Run a strategy against historical market data and see how it would have behaved through past conditions.',
-      detail:
-        'It shows how a set of rules held up when the market changed direction. It does not tell you what happens next, and past results are not a forecast.',
     },
   ],
 }
@@ -200,8 +193,8 @@ export const WHY = {
       body: 'The simulator runs on the same interface as everything else, so trying an idea costs you nothing but time.',
     },
     {
-      title: 'Seven Tools That Share One Dataset',
-      body: 'The analysis, the chart reader and the backtest are looking at the same numbers. You are not reconciling two sets of figures that should have matched.',
+      title: 'Six Tools That Share One Dataset',
+      body: 'The analysis, the chart reader and the signals are looking at the same numbers. You are not reconciling two sets of figures that should have matched.',
     },
     {
       title: 'Built To Show Its Limits',
@@ -252,34 +245,42 @@ export const SECURITY = {
 /* -------------------------------------------------------------------------
    Reviews
    -------------------------------------------------------------------------
-   There are no real reviews, and inventing them on a financial site is the
-   one thing this page cannot do. These are clearly labelled illustrative
-   scenarios above the cards as well as in the copy, so nobody mistakes them
-   for customers. Replace the array with real quotes before launch.
+   Supplied by the operator, with each trader's name, location and market.
+   Names and quotes must not be edited or invented here: an altered quote is
+   no longer what the person said. If a review is removed, remove it whole.
    ------------------------------------------------------------------------- */
 
 export const REVIEWS = {
-  eyebrow: 'What Traders Say',
+  eyebrow: 'Reviews',
   title: 'What Traders Say',
-  note: 'The scenarios below are illustrative examples, not customer reviews. We publish real reviews when we have them, with permission.',
+  lead: 'Traders on the tools they use and the questions they ask themselves.',
   items: [
     {
       quote:
-        'The part that changed how I work is seeing the reasoning. I stopped taking signals on faith and started asking what would prove them wrong.',
-      name: 'Illustrative Scenario',
-      role: 'Swing trader, forex',
+        'What I appreciate most is being able to understand the reasoning behind an analysis. Instead of simply following a signal, I can examine the market conditions, question the setup and consider what might invalidate my trading idea.',
+      name: 'James Mitchell',
+      role: 'Swing Trader',
+      location: 'London, UK',
+      market: 'Forex',
+      rating: 4.5,
     },
     {
       quote:
-        'I ran my rules through the simulator for a month before risking anything. Two of the three ideas I liked did not survive contact with the data.',
-      name: 'Illustrative Scenario',
-      role: 'Part time trader, crypto',
+        'The risk analysis tools make it easier to review a potential position before making a decision. I particularly like having key risk factors visible in one place rather than relying on assumptions.',
+      name: 'Sophia Bennett',
+      role: 'Part Time Trader',
+      location: 'Toronto, Canada',
+      market: 'Crypto',
+      rating: 5,
     },
     {
       quote:
-        'Having the risk panel in front of me before I size a position is the single most useful thing here. It is boring, and it is the reason I am still trading.',
-      name: 'Illustrative Scenario',
-      role: 'Day trader, equities',
+        'Testing a trading strategy before putting it into practice has helped me think more carefully about my decisions. Reviewing historical data and identifying weaknesses gives me a clearer perspective on different market setups.',
+      name: 'Daniel Fischer',
+      role: 'Day Trader',
+      location: 'Berlin, Germany',
+      market: 'Equities',
+      rating: 4,
     },
   ],
 }
