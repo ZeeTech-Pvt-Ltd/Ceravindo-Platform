@@ -49,18 +49,29 @@ function walk(key, points, start, end) {
   return out
 }
 
-/** [key, symbol, name, market, price, changePct] */
+/**
+ * Global instruments, quoted in USD.
+ *
+ * The site was Australia facing when these were AUD pairs and the ASX 200.
+ * It is global now, so the watchlist has to read as a world market rather
+ * than a local one: majors in crypto and forex, metals and energy, and the
+ * two US indices most people watch.
+ *
+ * [key, symbol, name, market, price, changePct]
+ */
 const ROWS = [
-  ['btc', 'BTC/AUD', 'Bitcoin', 'Crypto', 142380.2, 2.41],
-  ['eth', 'ETH/AUD', 'Ethereum', 'Crypto', 5214.6, 1.18],
-  ['xau', 'XAU/AUD', 'Gold', 'Commodities', 6102.4, -0.34],
-  ['xag', 'XAG/AUD', 'Silver', 'Commodities', 74.18, 0.62],
-  ['asx', 'ASX 200', 'S&P/ASX 200', 'Equities', 8412.1, 0.52],
-  ['aud', 'AUD/USD', 'Australian Dollar', 'Forex', 0.6684, -0.21],
-  ['eur', 'EUR/AUD', 'Euro', 'Forex', 1.6412, 0.14],
-  ['wti', 'WTI', 'Crude Oil', 'Commodities', 78.42, -0.88],
+  ['btc', 'BTC/USD', 'Bitcoin', 'Crypto', 96420.8, 2.41],
+  ['eth', 'ETH/USD', 'Ethereum', 'Crypto', 3412.55, 1.18],
+  ['xau', 'XAU/USD', 'Gold', 'Commodities', 2684.3, -0.34],
+  ['spx', 'S&P 500', 'S&P 500', 'Equities', 6021.4, 0.52],
   ['ndx', 'NDX', 'Nasdaq 100', 'Equities', 21480.5, 0.74],
-  ['sol', 'SOL/AUD', 'Solana', 'Crypto', 342.9, 3.16],
+  ['eur', 'EUR/USD', 'Euro', 'Forex', 1.0584, -0.21],
+  ['gbp', 'GBP/USD', 'British Pound', 'Forex', 1.2712, 0.14],
+  ['jpy', 'USD/JPY', 'Japanese Yen', 'Forex', 154.32, 0.38],
+  ['wti', 'WTI', 'Crude Oil', 'Commodities', 71.42, -0.88],
+  ['sol', 'SOL/USD', 'Solana', 'Crypto', 212.9, 3.16],
+  ['xag', 'XAG/USD', 'Silver', 'Commodities', 31.18, 0.62],
+  ['xrp', 'XRP/USD', 'XRP', 'Crypto', 2.31, -1.12],
 ]
 
 export const marketRows = ROWS.map(([key, symbol, name, market, price, change]) => ({
@@ -110,11 +121,12 @@ export const sentiment = {
   caption: 'Net long positioning, majors',
 }
 
-/** The scheduled events that move a session. Times are AEST. */
+/** The scheduled events that move a session. Times are UTC, since the
+    audience is global rather than in one timezone. */
 export const macroEvents = [
-  { when: 'Tue 11:30', label: 'RBA cash rate decision', impact: 'High' },
-  { when: 'Wed 22:30', label: 'US CPI, monthly', impact: 'High' },
-  { when: 'Fri 09:30', label: 'AU retail sales', impact: 'Medium' },
+  { when: 'Wed 19:00', label: 'US Federal Reserve decision', impact: 'High' },
+  { when: 'Thu 13:30', label: 'US CPI, monthly', impact: 'High' },
+  { when: 'Fri 07:00', label: 'UK GDP, quarterly', impact: 'Medium' },
 ]
 
 /**

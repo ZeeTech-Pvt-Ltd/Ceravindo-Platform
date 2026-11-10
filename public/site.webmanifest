@@ -1,13 +1,13 @@
 {
   "name": "Ceravindo",
   "short_name": "Ceravindo",
-  "description": "AI-assisted market research for Australian investors - structured crypto and multi-market analysis, published with its sources and limits.",
+  "description": "AI trading research and practice tools for traders worldwide. Market analysis, chart reading, paper trading and backtesting.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#FBFAF7",
   "theme_color": "#4A5D23",
-  "lang": "en-AU",
+  "lang": "en",
   "icons": [
     {
       "src": "/favicon.svg",

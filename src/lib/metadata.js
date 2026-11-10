@@ -36,7 +36,7 @@ export function pageMetadata(route) {
         },
       ],
       type: conf.type || 'website',
-      locale: 'en_AU',
+      locale: 'en',
     },
     twitter: {
       card: 'summary_large_image',

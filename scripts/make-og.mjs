@@ -51,13 +51,13 @@ const ogSvg = `
 
   <!-- Headline. Tracking is negative to match the h1 treatment on the page. -->
   <text x="88" y="288" font-family="${SANS}" font-weight="600" letter-spacing="-1.6"
-        font-size="64" fill="${INK}">Research first.</text>
+        font-size="64" fill="${INK}">Read the market</text>
   <text x="88" y="368" font-family="${SANS}" font-weight="600" letter-spacing="-1.6"
-        font-size="64" fill="${INK}">Decisions yours.</text>
+        font-size="64" fill="${INK}">before you trade it.</text>
 
   <rect x="88" y="408" width="96" height="5" rx="2.5" fill="${SAGE}"/>
 
-  <text x="88" y="470" font-family="${SANS}" font-size="25" fill="${MUTED}">AI-assisted market research for Australian investors.</text>
+  <text x="88" y="470" font-family="${SANS}" font-size="25" fill="${MUTED}">AI trading research and practice tools for traders worldwide.</text>
   <text x="88" y="508" font-family="${SANS}" font-size="25" fill="${MUTED}">Published with its sources and its limits.</text>
 
   <text x="88" y="560" font-family="${SANS}" font-size="21" fill="${MUTED}">ceravindo-platform.com</text>

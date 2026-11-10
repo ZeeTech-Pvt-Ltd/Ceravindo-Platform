@@ -1,18 +1,16 @@
 // =========================================================
 // All site copy, in one place.
 // =========================================================
-// Two rules governed every line below, and they should govern any line added
+// Four rules govern every line below, and they should govern any line added
 // later:
 //
 //   1. No figure appears unless the operator supplied it. Where a number is
-//      still unknown it is `null` here, and a null renders as nothing - the
-//      placeholder tokens that used to flag it were removed site wide. An
-//      invented statistic on a financial site is not a missing detail, it
-//      is a claim.
-//
+//      unknown it is `null` here, and a null renders as nothing.
 //   2. Every claim states its own limit. The product is described by what it
-//      does and what it cannot do, in the same breath. That is the honest
-//      version and it is also the one that survives scrutiny.
+//      does and what it cannot do, in the same breath.
+//   3. No dashes of any kind in visible copy. No em dashes, no en dashes, no
+//      hyphens. Full stops, commas and conjunctions carry the sentence.
+//   4. Title Case on every heading. Every word capitalised.
 //
 // Nothing here promises a return, a win rate, an accuracy figure, a customer
 // count, a rating or a licence. See README.md before adding anything that
@@ -20,11 +18,9 @@
 // =========================================================
 import { SUPPORT_EMAIL, SITE, SITE_LABEL } from './site.js'
 
-/* A figure the operator must supply before launch. `null` means "not yet
-   provided" - it simply stays out of the copy and out of the structured
-   data, which is safer than guessing. Placeholder tokens were removed site
-   wide at the operator's request, so a null never renders as anything. */
-export const MIN_DEPOSIT_AUD = null
+/* A figure the operator must supply before launch. `null` means it simply
+   stays out of the copy and out of the structured data. */
+export const MIN_DEPOSIT = null
 
 export const NAV = [
   { label: 'Home', href: '/' },
@@ -33,220 +29,343 @@ export const NAV = [
   { label: 'Contact', href: '/contact' },
 ]
 
+/* -------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------
+   Search intent for "Ceravindo" is navigational: someone typing it wants the
+   official site. So the hero confirms they are in the right place, then says
+   what the product does. The brand sits in the eyebrow and the h1 carries the
+   idea, which reads better than a heading stuffed with the name.
+   ------------------------------------------------------------------------- */
+
 export const HERO = {
-  eyebrow: 'AI market research · Australia',
-  title: 'Read the market before you trade it.',
-  lead: 'Ceravindo scans crypto, forex, equities and commodities around the clock, then publishes a plain-English brief on each: the finding, the evidence behind it, and how confident the model is.',
+  eyebrow: 'Ceravindo AI Trading',
+  title: 'Read The Market Before You Trade It',
+  lead: 'Ceravindo studies price action, chart patterns and market mood, then explains what it sees in plain English. You get the research. You make the call.',
   checks: [
-    'Live-style coverage of 4 markets in one view',
-    'Every signal shown with its evidence and its confidence',
-    'General information only, never personal advice',
+    'Seven AI tools in one platform',
+    'Every signal shows its reasoning',
+    'General information only, not financial advice',
   ],
   primaryCta: { label: 'Create Your Account', href: '#register' },
 }
 
-/* The method is a homepage section in its own right now (see METHOD below),
-   rather than the hero's right-hand panel - the panel is the market view,
-   which is what makes the page read as a trading product at a glance. */
-
-/* Replaces the payment-logo strip the sibling sites carry. Naming a broker or
-   a card network would imply a relationship that does not exist, so the strip
-   states the regulatory posture instead - which is the information a reader
-   actually needs before handing over a phone number. */
+/* States the regulatory posture rather than displaying payment logos. Naming a
+   broker or a card network would imply a relationship that does not exist. */
 export const TRUST = [
   { label: 'General information only' },
-  { label: 'Not personal financial advice' },
+  { label: 'Not financial advice' },
   { label: 'No trade execution' },
-  { label: 'Australian residents, 18+' },
+  { label: 'Open worldwide, 18+' },
 ]
 
+/* -------------------------------------------------------------------------
+   What is Ceravindo
+   ------------------------------------------------------------------------- */
+
 export const WHAT_IS = {
-  eyebrow: 'The platform',
-  title: 'What is Ceravindo?',
+  eyebrow: 'The Platform',
+  title: 'What Is Ceravindo?',
   paragraphs: [
-    'Ceravindo is a market research platform. You choose the markets you want to follow, and the platform gathers the data that moves them - price action, network activity, positioning, and the economic calendar - into a single written brief for each one.',
-    'A brief is not a recommendation. It sets out what the data shows, what the model made of it, how confident that reading is, and where it could be wrong. You keep the decision, and you keep it in whatever account you already use.',
-    'Ceravindo does not hold your money, does not connect to a broker, and does not place trades. It is a reading tool, not an execution tool.',
+    'Ceravindo is a research and practice platform for people who trade. It reads market data across crypto, forex, equities and commodities, then turns what it finds into a plain English brief you can actually use.',
+    'You get seven tools in one place. Analysis, chart reading, strategy building, risk planning, signals and backtesting all share the same market data, so the picture stays consistent from one screen to the next.',
+    'What you will not get is a promise. Ceravindo does not place trades, does not hold your money and does not tell you what to buy. It shows you the reasoning, then leaves the decision where it belongs.',
   ],
 }
 
+/* -------------------------------------------------------------------------
+   Features
+   -------------------------------------------------------------------------
+   Seven core features. Each entry explains what the tool does, how you use it
+   and why it matters, without repeating the same benefit twice. No invented
+   capabilities, integrations, indicators or performance numbers.
+   ------------------------------------------------------------------------- */
+
+export const FEATURES = {
+  eyebrow: 'Features',
+  title: 'Seven Tools, One Workspace',
+  lead: 'Every tool below runs on the same market data. Use one, or use them together.',
+  items: [
+    {
+      icon: 'chart',
+      title: 'AI Market Analysis',
+      body: 'Ceravindo reads price, volume and market conditions across every market on your watchlist, then writes a short brief on what it found.',
+      detail:
+        'You stop opening ten tabs to work out what happened overnight. The brief tells you what moved, what the model made of it, and how confident it is.',
+    },
+    {
+      icon: 'layers',
+      title: 'AI Chart Analysis',
+      body: 'Upload a chart, or open one from your watchlist, and the model marks the patterns, trend and levels it can see.',
+      detail:
+        'Useful when a setup looks obvious but you cannot say why. The analysis gives you the vocabulary, and shows which indicators it used.',
+    },
+    {
+      icon: 'compass',
+      title: 'Paper Trading Simulator',
+      body: 'Practise with simulated funds in a workspace that mirrors the live interface, so the first time you size a position is not with real money.',
+      detail:
+        'Test a hunch, learn how leverage changes a position, and build the habit of planning a trade before you take it.',
+    },
+    {
+      icon: 'layers',
+      title: 'Strategy Builder',
+      body: 'Set the conditions that matter to you, the markets they apply to and the risk you are willing to take. Ceravindo turns that into a strategy you can run.',
+      detail:
+        'Your approach stays yours. The builder gives it structure, so you can see it clearly and change one thing at a time.',
+    },
+    {
+      icon: 'shield',
+      title: 'Risk Management',
+      body: 'Before you commit, the platform shows what the trade costs you if it goes wrong: position size, exposure and the loss at your stop.',
+      detail:
+        'Most accounts do not fail on the entry. They fail on size. Seeing the downside first is the simplest way to keep it survivable.',
+    },
+    {
+      icon: 'activity',
+      title: 'AI Trading Signals',
+      body: 'The model flags setups it finds interesting, with the evidence behind each one and the conditions that would cancel it.',
+      detail:
+        'A signal here is a starting point for your own research, not an instruction. It is not a prediction, and it is not financial advice.',
+    },
+    {
+      icon: 'refresh',
+      title: 'Strategy Backtesting',
+      body: 'Run a strategy against historical market data and see how it would have behaved through past conditions.',
+      detail:
+        'It shows how a set of rules held up when the market changed direction. It does not tell you what happens next, and past results are not a forecast.',
+    },
+  ],
+}
+
+/* -------------------------------------------------------------------------
+   How it works
+   ------------------------------------------------------------------------- */
+
 export const HOW_IT_WORKS = {
-  eyebrow: 'How it works',
-  title: 'Three steps, and only the first one is ours',
+  eyebrow: 'How It Works',
+  title: 'Three Steps, And Only The First One Is Ours',
   steps: [
     {
       n: '01',
-      title: 'Build a watchlist',
-      body: 'Choose from crypto, foreign exchange, equities and commodities. Add a market and Ceravindo starts reading it. Remove it and the research stops.',
+      title: 'Create Your Account',
+      body: 'Tell us where to reach you. No card details, no broker connection and no password are collected at sign up.',
     },
     {
       n: '02',
-      title: 'Read the research',
-      body: 'Each brief opens with the finding, then the evidence behind it, then the model confidence, then the conditions that would invalidate it. Sources are shown alongside the claim they support.',
+      title: 'Explore The Tools',
+      body: 'Read a market brief, run a chart through the analyser, or build a strategy and test it on simulated funds before you ever risk real money.',
     },
     {
       n: '03',
-      title: 'Decide for yourself',
-      body: 'Nothing in Ceravindo tells you to buy or sell. What you do with a brief is your decision, made with whatever advice and account you already trust.',
+      title: 'Decide For Yourself',
+      body: 'Nothing in Ceravindo tells you to buy or sell. What you do with the research is your decision, made with whatever advice and account you already trust.',
     },
   ],
 }
 
-/* The four inputs, each paired with its own limit. The "cannot" line is the
-   point of the section, not a disclaimer bolted onto it. */
-export const METHOD = {
-  eyebrow: 'The method',
-  title: 'What the research reads, and what it cannot tell you',
-  /* Moved out of the hero when the hero became a market view. It answers the
-     question the hero now raises - what do I actually get - so it sits at the
-     top of the method section rather than being dropped. */
-  /* The pipeline, shown as a horizontal strip above the input cards. `limit`
-     marks the step that is a boundary rather than a stage - it renders on the
-     olive fill instead of the paper one, because "we go this far and no
-     further" is the most useful thing the section says. */
-  pipeline: {
-    steps: [
-      { n: '01', label: 'Read', detail: 'Four public data families, per market' },
-      { n: '02', label: 'Weigh', detail: 'Each reading scored against its own history' },
-      { n: '03', label: 'Publish', detail: 'Finding, evidence and confidence' },
-      { n: '04', label: 'Stop', detail: 'No buy or sell instruction', limit: true },
-    ],
-  },
-  /* `visual` picks the small chart each card renders - see InputVisual.jsx.
-     The visual is a real chart of the same data the card describes, not a
-     decorative shape, which is why each card carries the illustrative note. */
-  inputs: [
+/* -------------------------------------------------------------------------
+   Market snapshot
+   -------------------------------------------------------------------------
+   Renamed from "Live Market Data". The figures on this page are generated,
+   not streamed, so calling the section live would be a claim the site cannot
+   back. The label stays visible.
+   ------------------------------------------------------------------------- */
+
+export const MARKET_SNAPSHOT = {
+  eyebrow: 'Market Snapshot',
+  title: 'Markets At A Glance',
+  lead: 'Crypto, forex, equities and commodities in one view, so you can see where money is moving before you open a single chart.',
+  note: 'Figures are illustrative, not live market data.',
+}
+
+/* -------------------------------------------------------------------------
+   Why Ceravindo
+   -------------------------------------------------------------------------
+   The differentiators are things the platform actually does differently, not
+   claims about being the best. No comparisons to named competitors.
+   ------------------------------------------------------------------------- */
+
+export const WHY = {
+  eyebrow: 'Why Ceravindo',
+  title: 'Why Traders Use Ceravindo',
+  lead: 'Plenty of tools will tell you what to do. Fewer will show you why. That difference is the whole product.',
+  points: [
     {
-      title: 'Price and volume',
-      icon: 'chart',
-      visual: 'chart',
-      can: 'Describe market structure, trend and momentum as they are actually printed.',
-      cannot: 'Explain why a move happened. Price records the result, never the reason.',
+      title: 'The Reasoning Comes With The Answer',
+      body: 'Every brief names the data it read and the conditions that would prove it wrong. If you cannot see where a conclusion came from, you cannot judge it.',
     },
     {
-      title: 'On-chain activity',
-      icon: 'layers',
-      visual: 'flows',
-      can: 'Show network-level flows, wallet concentration and settlement activity for crypto assets.',
-      cannot: 'Value an asset. Activity is not worth, and a busy network is not a cheap one.',
+      title: 'Practice Before You Risk Anything',
+      body: 'The simulator runs on the same interface as everything else, so trying an idea costs you nothing but time.',
     },
     {
-      title: 'Market sentiment',
-      icon: 'compass',
-      visual: 'sentiment',
-      can: 'Show how crowded a position has become and where the market is leaning.',
-      cannot: 'Forecast a reversal. Crowding can persist far longer than a model expects.',
+      title: 'Seven Tools That Share One Dataset',
+      body: 'The analysis, the chart reader and the backtest are looking at the same numbers. You are not reconciling two sets of figures that should have matched.',
     },
     {
-      title: 'Macro and scheduled events',
-      icon: 'clock',
-      visual: 'events',
-      can: 'Provide context for the sessions and windows where volatility is most likely.',
-      cannot: 'Time an entry. Knowing that a day matters is not knowing what it will do.',
+      title: 'Built To Show Its Limits',
+      body: 'Uncertainty is stated rather than rounded away. A model that is sometimes wrong is still useful. One that pretends otherwise is not.',
+    },
+    {
+      title: 'Your Account, Your Broker',
+      body: 'Ceravindo does not hold funds, does not connect to a trading account and does not place orders. Your money stays where it already is.',
     },
   ],
 }
 
-export const COVERAGE = {
-  eyebrow: 'Coverage',
-  title: 'Four markets, one reading process',
-  lead: 'Each market is read with the same method and published in the same format, so a brief on gold and a brief on Bitcoin are directly comparable.',
-  /* `seriesKey` picks a series out of src/data/market.js so each card carries
-     a real chart rather than an icon - the four markets are the four data
-     families, and showing them as lines is what makes that concrete. The
-     figures are generated, hence the illustrative note under the heading. */
+/* -------------------------------------------------------------------------
+   Security and trust
+   -------------------------------------------------------------------------
+   Only practices that are true of this site. No certifications, audits or
+   compliance badges, because none have been supplied.
+   ------------------------------------------------------------------------- */
+
+export const SECURITY = {
+  eyebrow: 'Security And Trust',
+  title: 'What We Ask For, And What We Never Do',
+  lead: 'Most of the trust question is answered by what a sign up form refuses to ask you for.',
+  points: [
+    {
+      title: 'Four Fields, Not Fourteen',
+      body: 'Sign up asks for your name, email and phone number. That is the whole list.',
+    },
+    {
+      title: 'No Card Or Bank Details',
+      body: 'There is no field for them anywhere on this site, and no page will ever ask you to enter them.',
+    },
+    {
+      title: 'No Password At Sign Up',
+      body: 'You are not creating a login credential here, so there is nothing for a breach to expose.',
+    },
+    {
+      title: 'We Never Touch Your Funds',
+      body: 'Ceravindo has no access to a trading account, a broker balance or a wallet. There is nothing to withdraw.',
+    },
+    {
+      title: 'You Can Leave',
+      body: 'Write to the support address and we remove your details from the active service, subject to the retention period in the privacy policy.',
+    },
+  ],
+}
+
+/* -------------------------------------------------------------------------
+   Reviews
+   -------------------------------------------------------------------------
+   There are no real reviews, and inventing them on a financial site is the
+   one thing this page cannot do. These are clearly labelled illustrative
+   scenarios above the cards as well as in the copy, so nobody mistakes them
+   for customers. Replace the array with real quotes before launch.
+   ------------------------------------------------------------------------- */
+
+export const REVIEWS = {
+  eyebrow: 'What Traders Say',
+  title: 'What Traders Say',
+  note: 'The scenarios below are illustrative examples, not customer reviews. We publish real reviews when we have them, with permission.',
   items: [
     {
-      title: 'Crypto',
-      seriesKey: 'btc',
-      body: 'Major pairs and established networks, read alongside their on-chain activity.',
+      quote:
+        'The part that changed how I work is seeing the reasoning. I stopped taking signals on faith and started asking what would prove them wrong.',
+      name: 'Illustrative Scenario',
+      role: 'Swing trader, forex',
     },
     {
-      title: 'Foreign exchange',
-      seriesKey: 'aud',
-      body: 'Major and minor pairs, with the rate decisions and data releases that move them.',
+      quote:
+        'I ran my rules through the simulator for a month before risking anything. Two of the three ideas I liked did not survive contact with the data.',
+      name: 'Illustrative Scenario',
+      role: 'Part time trader, crypto',
     },
     {
-      title: 'Equities',
-      seriesKey: 'asx',
-      body: 'Large-cap names and index exposure, framed around earnings and sector rotation.',
-    },
-    {
-      title: 'Commodities',
-      seriesKey: 'xau',
-      body: 'Metals and energy, where supply, inventory and the dollar all pull at once.',
+      quote:
+        'Having the risk panel in front of me before I size a position is the single most useful thing here. It is boring, and it is the reason I am still trading.',
+      name: 'Illustrative Scenario',
+      role: 'Day trader, equities',
     },
   ],
 }
 
+/* -------------------------------------------------------------------------
+   Risk band
+   -------------------------------------------------------------------------
+   Global wording: no regulator or jurisdiction is named, because the site no
+   longer targets one country.
+   ------------------------------------------------------------------------- */
+
 export const RISK = {
-  title: 'Before you use any of this, read this part',
+  title: 'Before You Use Any Of This, Read This Part',
   points: [
     'Markets fall as well as rise. A position can lose value, and it can lose all of it.',
     'Leverage magnifies movement in both directions. It does not improve the odds, it enlarges the outcome.',
     'Crypto assets are volatile and, in places, thinly regulated. Prices can move sharply with no news at all.',
+    'Backtested results describe the past. They are not a forecast, and a strategy that worked before can fail next week.',
     'Never commit money you cannot afford to lose outright.',
   ],
   footnote:
-    'Nothing on this site is personal financial advice, and nothing here should be read as a recommendation to buy or sell any asset. Ceravindo does not know your circumstances, your income, your debts or your goals, and its research does not account for any of them. If you are unsure whether a decision suits you, speak to a licensed financial adviser.',
+    'Nothing on this site is personal financial advice, and nothing here should be read as a recommendation to buy or sell any asset. Ceravindo does not know your circumstances, your income, your debts or your goals, and its research does not account for any of them. If you are unsure whether a decision suits you, speak to a licensed adviser in your jurisdiction.',
 }
 
 export const FAQ_TEASER_COUNT = 4
 
+/* -------------------------------------------------------------------------
+   FAQ
+   -------------------------------------------------------------------------
+   Answers the questions the seven features raise. Global framing throughout.
+   ------------------------------------------------------------------------- */
+
 export const FAQ = [
   {
     q: 'What does Ceravindo actually do?',
-    a: 'It gathers market data for the assets you follow and publishes a written brief for each one - what the data shows, what the model concluded, how confident it is, and what would prove the reading wrong.',
+    a: 'It reads market data for the assets you follow and publishes a plain English brief for each one: what the data shows, what the model concluded, how confident it is, and what would prove the reading wrong.',
   },
   {
     q: 'Is this financial advice?',
-    a: 'No. Ceravindo publishes general information about markets. It does not consider your objectives, financial situation or needs, which is what personal advice requires. You should consider whether any information here is appropriate for you, and seek licensed advice if you are unsure.',
+    a: 'No. Ceravindo publishes general information about markets. It does not consider your objectives, financial situation or needs, which is what personal advice requires. Speak to a licensed adviser in your jurisdiction if you are unsure.',
   },
   {
     q: 'Does the AI place trades for me?',
-    a: 'No. Ceravindo does not connect to a broker, does not hold client money, and has no ability to trade on your behalf. It produces research and nothing else.',
+    a: 'No. Ceravindo does not connect to a broker, does not hold client money and has no ability to trade on your behalf. It produces research and a place to practise, and nothing else.',
   },
   {
-    q: 'What data does the research use?',
-    a: 'Four families of public data: price and volume, on-chain activity for crypto assets, market sentiment and positioning, and the scheduled economic calendar. Each brief names the sources behind the finding it presents.',
+    q: 'What is the paper trading simulator for?',
+    a: 'It lets you test ideas with simulated funds in the same interface you would use for research. You can size a position, see how leverage changes it, and get the mistakes out of the way before real money is involved.',
+  },
+  {
+    q: 'How does the strategy builder work?',
+    a: 'You set the conditions that matter to you, the markets they apply to and the risk you are willing to accept. Ceravindo turns that into a strategy you can review and backtest, and you can change one variable at a time.',
+  },
+  {
+    q: 'What do the AI trading signals mean?',
+    a: 'They flag setups the model finds interesting, along with the evidence and the conditions that would cancel the idea. A signal is a starting point for your own research. It is not a prediction and it is not a recommendation.',
+  },
+  {
+    q: 'Can I test a strategy before using it?',
+    a: 'Yes. Backtesting runs your rules against historical market data so you can see how they behaved through past conditions. It describes the past, not the future, and a strategy that worked before can still fail next week.',
+  },
+  {
+    q: 'What markets are covered?',
+    a: 'Crypto, foreign exchange, equities and commodities. The same reading process runs across all four, so a brief on gold and a brief on Bitcoin are directly comparable.',
   },
   {
     q: 'Where does the data come from?',
-    a: 'Public market data providers and public blockchain records. Ceravindo does not use private or non-public information, and it does not receive order flow from any broker.',
-  },
-  {
-    q: 'How often is the research published?',
-    a: 'Each market you follow is re-read on a rolling basis rather than on a fixed signal schedule, and a brief is republished when the reading materially changes. Quiet markets produce fewer updates on purpose.',
+    a: 'Public market data providers and public blockchain records. Ceravindo does not use private or non public information, and it does not receive order flow from any broker.',
   },
   {
     q: 'Are results guaranteed?',
     a: 'No, and any platform that says otherwise should be treated with suspicion. Model output is probabilistic. It is wrong sometimes, and market outcomes depend on far more than any model can observe.',
   },
   {
-    q: 'Do you show when you get it wrong?',
-    a: 'Yes. A revised brief states what changed and why. A record that only contains the calls that worked is marketing, not research.',
+    q: 'What happens to the details I enter at sign up?',
+    a: 'Your first name, last name, email and phone number are used to set up your account and contact you about it. They are not sold. The privacy policy sets out where they go and how to have them removed.',
   },
   {
-    q: 'What happens to the details I enter at sign-up?',
-    a: 'Your first name, last name, email and phone number are used to set up your account and contact you about it. They are not sold. The privacy policy sets out exactly where they go and how to have them removed.',
-  },
-  {
-    q: 'Can I close my account?',
-    a: 'Yes, at any time, by writing to the support address. Closing an account removes your details from the active service, subject to the retention period described in the privacy policy.',
-  },
-  {
-    q: 'How do I know a Ceravindo page is genuine?',
-    a: 'Everything first-party is served from ceravindo-platform.com. Ceravindo does not run paid signal groups, does not message people first on social platforms, and never asks for card details, bank details or a password at sign-up.',
-  },
-  {
-    q: 'How do I report a problem or make a complaint?',
-    a: 'Write to the support address with what happened. Privacy complaints can also be taken to the Office of the Australian Information Commissioner if you are not satisfied with the response.',
+    q: 'How do I close my account or report a problem?',
+    a: 'Write to the support address. Closing an account removes your details from the active service, subject to the retention period described in the privacy policy. If you are not satisfied with our response, you can raise it with your local data protection authority.',
   },
 ]
 
 export const FINAL_CTA = {
-  title: 'Start reading before you decide',
-  body: 'Create an account to build a watchlist and start receiving research briefs. No card details, no broker connection, no password.',
+  title: 'Start Reading Before You Decide',
+  body: 'Create an account to build a watchlist, run a strategy and see the research for yourself. No card details, no broker connection, no password.',
   primaryCta: { label: 'Create Your Account', href: '#register' },
 }
 
@@ -254,46 +373,35 @@ export const FINAL_CTA = {
    the chart behind it change. One entry per page that is not the homepage. */
 export const PAGE_CTA = {
   about: {
-    title: 'The only way to judge it is to read one',
-    body: 'Create an account and start receiving briefs for the markets you choose.',
+    title: 'The Only Way To Judge It Is To Read One',
+    body: 'Create an account and start reading the research for the markets you choose.',
     label: 'Create Your Account',
   },
   faq: {
-    title: 'Still not answered?',
-    body: 'Send us the question and we will come back to you - support runs around the clock.',
-    label: 'Contact us',
+    title: 'Still Not Answered?',
+    body: 'Send us the question and we will come back to you.',
+    label: 'Contact Us',
     href: '/contact',
   },
   contact: {
-    title: 'Start reading before you decide',
-    body: 'Create an account to build a watchlist and start receiving research briefs.',
+    title: 'Start Reading Before You Decide',
+    body: 'Create an account to build a watchlist and start reading the research.',
     label: 'Create Your Account',
   },
 }
 
 export const ABOUT = {
   title: 'About Ceravindo',
-  lead: 'A market research platform built for Australian readers, published on the principle that a claim without its evidence is not worth making.',
-  /* Shown as a strip under the hero. These used to be the hero's panel; they
-     moved here when the hero took the market dashboard, because four
-     statements in a list were the wrong thing to put beside a chart. */
+  lead: 'A market research and practice platform, published on the principle that a claim without its evidence is not worth making.',
   principles: [
     'Every figure is sourced before it is published',
     'Uncertainty is stated, not rounded away',
     'A wrong reading is corrected in public, not deleted',
-    'No performance claims and no testimonials',
+    'No performance claims and no invented reviews',
   ],
-  /* `visual` picks the panel beside the section - see AboutVisuals.jsx. Each
-     section makes a different claim, so each gets a different drawing rather
-     than the same chart four times. */
-  /* A section renders `image` if it has one, and its `visual` panel otherwise.
-     The two that carry photographs do so because they are the two claims a
-     picture supports better than a diagram: who this is for, and how it is
-     produced. "What we are not" and "How the AI is used" are about limits, and
-     a limit is clearer drawn than photographed. */
   sections: [
     {
-      title: 'What we are',
+      title: 'What We Are',
       visual: 'data',
       image: {
         src: '/about2.webp',
@@ -301,21 +409,21 @@ export const ABOUT = {
         width: 1400,
         height: 1042,
       },
-      body: 'Ceravindo gathers public market data across crypto, foreign exchange, equities and commodities, and publishes written research briefs. Each brief carries its finding, the evidence behind it, the confidence the model holds, and the conditions under which the reading would be wrong.',
+      body: 'Ceravindo gathers public market data across crypto, foreign exchange, equities and commodities, and publishes written research briefs alongside tools to practise with. Each brief carries its finding, the evidence behind it, the confidence the model holds, and the conditions under which the reading would be wrong.',
     },
     {
-      title: 'What we are not',
+      title: 'What We Are Not',
       visual: 'boundary',
       image: {
         src: '/about5.webp',
-        alt: 'A person surrounded by crossed-out cards labelled broker, financial adviser, fund manager, custodian and other roles Ceravindo does not take',
+        alt: 'A person surrounded by crossed out cards labelled broker, financial adviser, fund manager, custodian and other roles Ceravindo does not take',
         width: 1400,
         height: 1042,
       },
       body: 'Ceravindo is not a broker, not a financial adviser, not a fund manager and not a custodian. We do not hold client money, do not connect to a trading account, and do not place orders. We do not manage anyone’s portfolio and we do not tell anyone what to buy or sell.',
     },
     {
-      title: 'Editorial standards',
+      title: 'Editorial Standards',
       visual: 'correction',
       image: {
         src: '/about4.webp',
@@ -323,10 +431,10 @@ export const ABOUT = {
         width: 1309,
         height: 1201,
       },
-      body: 'Every figure we publish is sourced. Where the model is uncertain, we say so rather than rounding to a confident-sounding number. Where a published reading turns out to be wrong, the correction is recorded against the original rather than replacing it. We do not publish testimonials we cannot verify, and we do not publish performance figures at all.',
+      body: 'Every figure we publish is sourced. Where the model is uncertain, we say so rather than rounding to a confident sounding number. Where a published reading turns out to be wrong, the correction is recorded against the original rather than replacing it. We do not publish reviews we cannot verify, and we do not publish performance figures at all.',
     },
     {
-      title: 'How the AI is used',
+      title: 'How The AI Is Used',
       visual: 'process',
       image: {
         src: '/about6.webp',
@@ -334,7 +442,7 @@ export const ABOUT = {
         width: 1400,
         height: 1042,
       },
-      body: 'The model summarises and interprets data that is already public. It does not receive non-public information, does not have access to any reader’s account, and does not act on anything it produces. Its output is reviewed against its sources before publication, and a brief that cannot be traced back to its evidence is not published.',
+      body: 'The model summarises and interprets data that is already public. It does not receive non public information, does not have access to any reader’s account, and does not act on anything it produces. Its output is reviewed against its sources before publication, and a brief that cannot be traced back to its evidence is not published.',
     },
   ],
 }
@@ -342,30 +450,19 @@ export const ABOUT = {
 export const CONTACT = {
   title: 'Contact Ceravindo',
   lead: 'Questions about the research, your account, or the data behind a brief.',
-  /* The hero's panel. `href` is the complete URL, not a prefix - the email
-     address is only written once, in src/data/site.js, and building the
-     mailto here is what keeps it from being typed twice. */
+  /* `href` is the complete URL, not a prefix. The email is written once, in
+     src/data/site.js. */
   panel: {
-    hours: { value: '24/7, 365 days a year', note: 'Round-the-clock assistance' },
+    hours: { value: '24/7, 365 Days A Year', note: 'Round the clock assistance' },
     channels: [
       { label: 'Email', value: SUPPORT_EMAIL, href: `mailto:${SUPPORT_EMAIL}` },
       { label: 'Website', value: SITE_LABEL, href: SITE },
-      { label: 'Based in', value: 'Australia' },
+      { label: 'Coverage', value: 'Worldwide' },
     ],
   },
-  /* The heading and the button say "get in touch", not "send a message".
-     They used to say "send us a message", which promised a message box the
-     form does not have - it collects name, email and phone, and the relay
-     behind it takes exactly six fields with no message among them. Offering
-     the box would collect something that goes nowhere, so the copy describes
-     what actually happens instead. */
-  formHeading: 'Get in touch',
+  formHeading: 'Get In Touch',
   nextSteps: {
-    title: 'What happens next',
-    /* The contact flow, not the signup one. These were the confirmation
-       page's steps verbatim - "setting up your watchlist", "receiving
-       research briefs" - which describe creating an account to someone who
-       came here to ask a question. */
+    title: 'What Happens Next',
     steps: [
       'We check the details you sent.',
       'We come back to you by email or phone.',
@@ -375,27 +472,27 @@ export const CONTACT = {
 }
 
 export const THANK_YOU = {
-  title: 'Thanks - your details are in',
-  body: 'We have received your details and will be in touch about your research account. Nothing further is needed from you right now.',
+  title: 'Thanks, Your Details Are In',
+  body: 'We have received your details and will be in touch about your account. Nothing further is needed from you right now.',
   steps: [
     'We check the details you sent.',
-    'You hear back from us about setting up your watchlist.',
-    'You start receiving research briefs for the markets you follow.',
+    'You hear back from us about setting up your account.',
+    'You start reading research briefs for the markets you follow.',
   ],
 }
 
 export const NOT_FOUND = {
-  title: 'That page does not exist',
+  title: 'That Page Does Not Exist',
   body: 'The link may be old, or the address may have a typo in it.',
-  homeCta: 'Back to the homepage',
-  contactCta: 'Contact us',
+  homeCta: 'Back To The Homepage',
+  contactCta: 'Contact Us',
 }
 
 export const FOOTER = {
   blurb:
-    'Ceravindo publishes AI-assisted market research for Australian readers. General information only, not personal financial advice.',
+    'Ceravindo publishes AI assisted market research and practice tools for traders worldwide. General information only, not financial advice.',
   legalNote:
-    'Ceravindo does not hold client money and does not execute trades. Market research describes what the data shows; it does not predict outcomes.',
+    'Ceravindo does not hold client money and does not execute trades. Market research describes what the data shows. It does not predict outcomes.',
 }
 
 export const RISK_WARNING =

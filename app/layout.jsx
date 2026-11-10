@@ -48,7 +48,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en-AU" className={`${instrument.variable} ${inter.variable}`}>
+    <html lang="en" className={`${instrument.variable} ${inter.variable}`}>
       <body>
         <a className="skip-link" href="#main">
           Skip to content

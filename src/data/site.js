@@ -17,4 +17,4 @@ export const SITE = 'https://ceravindo-platform.com'
 export const SITE_LABEL = 'ceravindo-platform.com'
 export const SUPPORT_EMAIL = 'support@ceravindo-platform.com'
 export const OG_IMAGE = `${SITE}/og-image.png`
-export const LOCALE_OG = 'en_AU'
+export const LOCALE_OG = 'en'

@@ -3,22 +3,30 @@
 // meta description, canonical URLs, robots rules, Open Graph, Twitter cards
 // and JSON-LD structured data.
 // =========================================================
-// Consumed twice, and the two consumers must agree: <Seo/> writes these
-// values into document.head at runtime, and scripts/build.mjs bakes the same
-// values into each prerendered HTML file. One place to change, so they cannot
-// drift.
+// Consumed twice, and the two consumers must agree: src/lib/metadata.js maps
+// this onto Next's Metadata API at build time, and every page reads its entry
+// through pageMetadata(). One place to change, so they cannot drift.
+//
+// SEARCH INTENT. The primary keyword is the brand, "Ceravindo", which is a
+// navigational search: someone typing it wants the official site. The
+// secondary keywords are "Ceravindo AI trading" and "Ceravindo platform".
+// That shapes the copy: the brand is confirmed in the title tag and the hero
+// eyebrow, then the page gets on with saying what the product does. Stuffing
+// "Ceravindo" into every heading would read badly and would not help a
+// navigational query anyway.
+//
+// Meta limits, enforced by the operator's brief: titles under 60 characters,
+// descriptions under 155 and ending in a call to action.
 //
 // SITE is exported and imported everywhere an absolute URL is needed. A
 // sibling project retyped this origin in three files and one copy had already
-// drifted to a domain that was not theirs - so do not retype it. The sitemap,
-// robots.txt and the JSON-LD @id values all derive from it.
+// drifted to a domain that was not theirs, so do not retype it.
 // =========================================================
-import { FAQ, MIN_DEPOSIT_AUD } from './content.js'
+import { FAQ, MIN_DEPOSIT } from './content.js'
 
 // Imported for use here, and re-exported so the files that already import
 // these from seo.js keep working - site.js stays the one place the values are
-// written. `export ... from` on its own would re-export without binding them
-// locally, which is a reference error the moment one is used below.
+// written.
 import { SITE, BRAND, OG_IMAGE, SUPPORT_EMAIL, LOCALE_OG } from './site.js'
 export { SITE, BRAND, OG_IMAGE, SUPPORT_EMAIL, LOCALE_OG }
 
@@ -27,18 +35,14 @@ const NOINDEX = 'noindex, nofollow'
 
 // ---------- JSON-LD builders ----------
 //
-// Everything below reflects content that is actually on the site. Two fields
-// a sibling project ships are deliberately absent here:
+// Everything below reflects content that is actually on the site. `address`
+// and `telephone` are deliberately absent: a postal address in structured data
+// is a factual claim surfaced directly in search results, so it ships only
+// when the operator supplies a real one. TODO(owner): add when confirmed.
 //
-//   address    - it hardcodes a Melbourne PostalAddress. A postal address in
-//                structured data is a factual claim surfaced directly in
-//                search results, so it ships only when the operator supplies
-//                a real one. TODO(owner): add when confirmed.
-//   telephone  - same reason.
-//
-// An `offers` block is emitted only when MIN_DEPOSIT_AUD is a real number.
-// An invented price there is the single most damaging thing this file could
-// publish, so it is conditional rather than a placeholder.
+// An `offers` block is emitted only when MIN_DEPOSIT is a real number. An
+// invented price there is the single most damaging thing this file could
+// publish.
 
 const organization = {
   '@context': 'https://schema.org',
@@ -48,10 +52,10 @@ const organization = {
   url: SITE,
   logo: `${SITE}/favicon.svg`,
   description:
-    'Ceravindo is an AI-assisted market research platform for Australian investors - structured crypto and multi-market analysis, published with its sources and its limits.',
+    'Ceravindo is an AI trading platform offering market analysis, AI chart reading, a paper trading simulator, strategy building, risk tools and backtesting.',
   email: SUPPORT_EMAIL,
-  inLanguage: 'en-AU',
-  areaServed: 'Australia',
+  inLanguage: 'en',
+  areaServed: 'Worldwide',
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer support',
@@ -67,7 +71,7 @@ const website = {
   name: BRAND,
   url: SITE,
   publisher: { '@id': `${SITE}/#organization` },
-  inLanguage: 'en-AU',
+  inLanguage: 'en',
 }
 
 function webPage(name, url, description) {
@@ -78,7 +82,7 @@ function webPage(name, url, description) {
     name,
     url,
     description,
-    inLanguage: 'en-AU',
+    inLanguage: 'en',
     isPartOf: { '@id': `${SITE}/#website` },
     publisher: { '@id': `${SITE}/#organization` },
   }
@@ -102,23 +106,23 @@ function serviceSchema() {
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${SITE}/#service`,
-    name: 'Ceravindo Market Research Platform',
-    serviceType: 'Market research platform',
+    name: 'Ceravindo AI Trading Platform',
+    serviceType: 'AI trading research and practice platform',
     description:
-      'AI-assisted market research across crypto, foreign exchange, equities and commodities, published as written briefs with their sources and their confidence.',
+      'AI market analysis, chart analysis, a paper trading simulator, a strategy builder, risk management tools, trading signals and strategy backtesting in one platform.',
     provider: { '@id': `${SITE}/#organization` },
-    areaServed: 'Australia',
-    audience: { '@type': 'Audience', audienceType: 'Australian investors and traders' },
+    areaServed: 'Worldwide',
+    audience: { '@type': 'Audience', audienceType: 'Traders worldwide' },
     // Only when a real figure exists. See the note above.
-    ...(typeof MIN_DEPOSIT_AUD === 'number'
+    ...(typeof MIN_DEPOSIT === 'number'
       ? {
           offers: {
             '@type': 'Offer',
-            name: 'Ceravindo research account',
-            price: String(MIN_DEPOSIT_AUD),
-            priceCurrency: 'AUD',
+            name: 'Ceravindo trading account',
+            price: String(MIN_DEPOSIT),
+            priceCurrency: 'USD',
             description:
-              'Minimum deposit to open a Ceravindo research account. No subscription or registration fees.',
+              'Minimum deposit to open a Ceravindo account. No subscription or registration fees.',
           },
         }
       : {}),
@@ -143,38 +147,37 @@ export function buildFaqPage(items = FAQ) {
 
 // ---------- Per-route configuration ----------
 //
-// The keys here are the route names src/lib/metadata.js is asked for and the keys
-// scripts/build.mjs writes files for. They must stay in step with
-// scripts/prerender-entry.jsx ROUTES.
+// The keys here are the route names src/lib/metadata.js is asked for and the
+// keys src/data/content.js is written against.
 
 export const seo = {
   home: {
-    title: `${BRAND} | AI Market Research for Australian Investors`,
+    title: `${BRAND} | AI Trading Platform For Global Markets`,
     description:
-      'Ceravindo is an AI-assisted market research platform for Australia - structured crypto and multi-market analysis, published with its sources and limits.',
+      'Ceravindo is an AI trading platform with market analysis, chart reading, a paper trading simulator and backtesting. Create your account today.',
     keywords:
-      'AI market research australia, market research platform, crypto research Australia, Ceravindo, market briefs',
+      'Ceravindo, Ceravindo AI trading, Ceravindo platform, AI trading platform, AI chart analysis, paper trading simulator, strategy builder, backtesting',
     robots: INDEX,
     canonical: `${SITE}/`,
-    ogImageAlt: 'Ceravindo - AI-assisted market research for Australian investors',
+    ogImageAlt: 'Ceravindo, an AI trading platform for global markets',
     type: 'website',
     schema: [organization, website, serviceSchema(), buildFaqPage()],
   },
 
   about: {
-    title: `About ${BRAND} | How Our Research Is Produced`,
+    title: `About ${BRAND} | AI Trading Research Platform`,
     description:
-      'How Ceravindo produces AI-assisted market research - our editorial standards, our data sources, and the limits of what our analysis can tell you.',
+      'See how Ceravindo builds its AI trading research, what the model can and cannot do, and the limits we publish with every brief. Read more.',
     robots: INDEX,
     canonical: `${SITE}/about`,
-    ogImageAlt: `About ${BRAND} - how our market research is produced`,
+    ogImageAlt: `About ${BRAND}, an AI trading research platform`,
     type: 'website',
     schema: [
       organization,
       webPage(
         `About ${BRAND}`,
         `${SITE}/about`,
-        'How Ceravindo produces AI-assisted market research, and the limits of that research.',
+        'How Ceravindo produces AI trading research, and the limits of that research.',
       ),
       breadcrumbs([
         { name: 'Home', path: '/' },
@@ -184,9 +187,9 @@ export const seo = {
   },
 
   contact: {
-    title: `Contact ${BRAND} | Support for Australian Users`,
+    title: `Contact ${BRAND} | Support And Enquiries`,
     description:
-      'Contact the Ceravindo team with a question about our market research platform. Send a message from the form or email support - we answer around the clock.',
+      'Questions about Ceravindo AI trading research or your account? Send a message or email support and we will get back to you. Contact us.',
     robots: INDEX,
     canonical: `${SITE}/contact`,
     ogImageAlt: `Contact ${BRAND}`,
@@ -196,7 +199,7 @@ export const seo = {
       webPage(
         `Contact ${BRAND}`,
         `${SITE}/contact`,
-        'How to reach the Ceravindo team with a question about the research platform.',
+        'How to reach the Ceravindo team with a question about the platform.',
       ),
       breadcrumbs([
         { name: 'Home', path: '/' },
@@ -206,9 +209,9 @@ export const seo = {
   },
 
   faq: {
-    title: `${BRAND} FAQ | AI Market Research Questions`,
+    title: `${BRAND} FAQ | AI Trading Questions Answered`,
     description:
-      'Answers to common questions about Ceravindo - how the research is produced, what the platform does and does not do, data sources, and how to contact us.',
+      'Answers about Ceravindo AI trading tools, signals, backtesting, paper trading and your data. Find what you need and get started.',
     robots: INDEX,
     canonical: `${SITE}/faq`,
     ogImageAlt: `${BRAND} frequently asked questions`,
@@ -217,7 +220,7 @@ export const seo = {
       webPage(
         `${BRAND} FAQ`,
         `${SITE}/faq`,
-        'Common questions about how Ceravindo produces and publishes market research.',
+        'Common questions about the Ceravindo AI trading platform and how it works.',
       ),
       breadcrumbs([
         { name: 'Home', path: '/' },
@@ -228,22 +231,22 @@ export const seo = {
   },
 
   terms: {
-    title: `Terms of Use | ${BRAND} Market Research Platform`,
+    title: `Terms Of Use | ${BRAND} AI Trading Platform`,
     description:
-      'The terms that govern your use of the Ceravindo website and research platform, including eligibility, acceptable use, and the limits of our liability.',
+      'The terms that govern your use of the Ceravindo AI trading platform, including eligibility, acceptable use and liability. Read the terms.',
     robots: INDEX,
     canonical: `${SITE}/terms`,
     ogImageAlt: `${BRAND} terms of use`,
     type: 'website',
     schema: [
       webPage(
-        `Terms of Use | ${BRAND}`,
+        `Terms Of Use | ${BRAND}`,
         `${SITE}/terms`,
-        'The terms governing use of the Ceravindo website and research platform.',
+        'The terms governing use of the Ceravindo AI trading platform.',
       ),
       breadcrumbs([
         { name: 'Home', path: '/' },
-        { name: 'Terms of Use', path: '/terms' },
+        { name: 'Terms Of Use', path: '/terms' },
       ]),
     ],
   },
@@ -251,7 +254,7 @@ export const seo = {
   privacy: {
     title: `Privacy Policy | ${BRAND}`,
     description:
-      'How Ceravindo collects, uses, stores and protects your personal information, in line with the Australian Privacy Principles under the Privacy Act 1988 (Cth).',
+      'How Ceravindo collects, uses and protects your personal information, and how to have it corrected or removed. Read the policy.',
     robots: INDEX,
     canonical: `${SITE}/privacy`,
     ogImageAlt: `${BRAND} privacy policy`,
@@ -272,7 +275,7 @@ export const seo = {
   'risk-disclosure': {
     title: `Risk Disclosure | ${BRAND}`,
     description:
-      'Important information about the risks of trading and investing in crypto and other markets, and the limits of general market research like ours.',
+      'Trading carries risk. Read what Ceravindo research can and cannot tell you before you act on any of it. Read the disclosure.',
     robots: INDEX,
     canonical: `${SITE}/risk-disclosure`,
     ogImageAlt: `${BRAND} risk disclosure`,
@@ -295,7 +298,7 @@ export const seo = {
   'thank-you': {
     title: `Thank You | ${BRAND}`,
     description:
-      'Your details have been received. Our team will be in touch about your Ceravindo research account.',
+      'Your details have been received. We will be in touch about your Ceravindo account. Back to the homepage.',
     robots: NOINDEX,
     canonical: null,
     ogImageAlt: `Thank you from ${BRAND}`,
@@ -306,10 +309,10 @@ export const seo = {
   404: {
     title: `Page Not Found | ${BRAND}`,
     description:
-      "The page you're looking for doesn't exist or has moved. Return to the Ceravindo homepage or contact our team.",
+      'That page does not exist. Head back to the Ceravindo homepage or contact our team. Return home.',
     robots: NOINDEX,
     canonical: null,
-    ogImageAlt: `Page not found - ${BRAND}`,
+    ogImageAlt: `Page not found on ${BRAND}`,
     type: 'website',
     schema: [],
   },

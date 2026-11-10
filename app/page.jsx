@@ -6,12 +6,15 @@ import Hero from '@/components/Hero.jsx'
 import Ticker from '@/components/Ticker.jsx'
 import TrustStrip from '@/components/TrustStrip.jsx'
 import WhatIs from '@/components/WhatIs.jsx'
+import Features from '@/components/Features.jsx'
 import HowItWorks from '@/components/HowItWorks.jsx'
-import ResearchMethod from '@/components/ResearchMethod.jsx'
-import Coverage from '@/components/Coverage.jsx'
 import RiskFirst from '@/components/RiskFirst.jsx'
-import Faq from '@/components/Faq.jsx'
 import Register from '@/components/Register.jsx'
+import MarketSnapshot from '@/components/MarketSnapshot.jsx'
+import Why from '@/components/Why.jsx'
+import Security from '@/components/Security.jsx'
+import Reviews from '@/components/Reviews.jsx'
+import Faq from '@/components/Faq.jsx'
 import FinalCta from '@/components/FinalCta.jsx'
 
 export const metadata = pageMetadata('home')
@@ -29,10 +32,15 @@ function FaqTeaser() {
 }
 
 /**
- * Home. The order is deliberate: the risk band sits before the form, so a
- * reader meets the downside before being asked for a phone number, and the
- * FAQ sits above the form for the same reason - the questions it answers are
- * the ones someone has immediately before signing up.
+ * Home. The order follows the operator's brief:
+ *
+ *   Hero, What Is, Features, How It Works, Get Started, Market Snapshot,
+ *   Why, Security And Trust, Reviews, FAQs, CTA
+ *
+ * with one deliberate insertion. The risk band sits immediately before the
+ * sign up form, so a reader meets the downside before being asked for a phone
+ * number, not after. That rule comes from the standing brief and overrides the
+ * section order where the two disagree.
  */
 export default function HomePage() {
   return (
@@ -43,12 +51,15 @@ export default function HomePage() {
       <Ticker />
       <TrustStrip />
       <WhatIs />
+      <Features />
       <HowItWorks />
-      <ResearchMethod />
-      <Coverage />
       <RiskFirst />
-      <FaqTeaser />
       <Register />
+      <MarketSnapshot />
+      <Why />
+      <Security />
+      <Reviews />
+      <FaqTeaser />
       <FinalCta />
     </>
   )

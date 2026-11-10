@@ -70,6 +70,21 @@ export const Shield = (p) => (
   </svg>
 )
 
+export const Activity = (p) => (
+  <svg {...base} {...p}>
+    <path d="M3 12h4l2.5 6 5-14 2.5 8h4" />
+  </svg>
+)
+
+export const Refresh = (p) => (
+  <svg {...base} {...p}>
+    <path d="M20 11a8 8 0 0 0-13.7-5.3L4 8" />
+    <path d="M4 4v4h4" />
+    <path d="M4 13a8 8 0 0 0 13.7 5.3L20 16" />
+    <path d="M20 20v-4h-4" />
+  </svg>
+)
+
 export const Chart = (p) => (
   <svg {...base} {...p}>
     <path d="M4 19h16" />
