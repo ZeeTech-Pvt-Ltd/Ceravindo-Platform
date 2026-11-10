@@ -68,7 +68,7 @@ export const WHAT_IS = {
   title: 'What Is Ceravindo?',
   paragraphs: [
     'Ceravindo is a research and practice platform for people who trade. It reads market data across crypto, forex, equities and commodities, then turns what it finds into a plain English brief you can actually use.',
-    'You get six tools in one place. Analysis, chart reading, strategy building, risk planning and signals all share the same market data, so the picture stays consistent from one screen to the next.',
+    'You get six tools in one place. Analysis, chart reading, strategy building, risk planning and signals all share the same market data across the Ceravindo platform, so the picture stays consistent from one screen to the next.',
     'What you will not get is a promise. Ceravindo does not place trades, does not hold your money and does not tell you what to buy. It shows you the reasoning, then leaves the decision where it belongs.',
   ],
 }
@@ -316,7 +316,7 @@ export const FAQ_TEASER_COUNT = 4
 export const FAQ = [
   {
     q: 'What does Ceravindo actually do?',
-    a: 'It reads market data for the assets you follow and publishes a plain English brief for each one: what the data shows, what the model concluded, how confident it is, and what would prove the reading wrong.',
+    a: 'The Ceravindo platform reads market data for the assets you follow and publishes a plain English brief for each one: what the data shows, what the model concluded, how confident it is, and what would prove the reading wrong.',
   },
   {
     q: 'Is this financial advice?',
@@ -410,7 +410,7 @@ export const ABOUT = {
         width: 1400,
         height: 1042,
       },
-      body: 'Ceravindo gathers public market data across crypto, foreign exchange, equities and commodities, and publishes written research briefs alongside tools to practise with. Each brief carries its finding, the evidence behind it, the confidence the model holds, and the conditions under which the reading would be wrong.',
+      body: 'Ceravindo AI trading runs on public market data across crypto, foreign exchange, equities and commodities, with written research briefs alongside tools to practise with. Each brief carries its finding, the evidence behind it, the confidence the model holds, and the conditions under which the reading would be wrong.',
     },
     {
       title: 'What We Are Not',
