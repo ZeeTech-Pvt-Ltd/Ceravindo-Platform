@@ -11,14 +11,16 @@ import { ChevronDown } from './icons.jsx'
  * set of divs, so the open/closed state is announced correctly and the
  * keyboard behaviour is the browser's own.
  *
- * `limit` gives the homepage teaser its short list. Both callers read the
- * same FAQ array, which is also what buildFaqPage() turns into JSON-LD - so
- * the structured answer and the visible answer cannot diverge.
+ * `limit` gives the homepage teaser its short list. `items` lets a page carry
+ * its own questions, which is how the review page gets a set that matches its
+ * JSON-LD rather than the site-wide list. The default callers read the same
+ * FAQ array, which is also what buildFaqPage() turns into JSON-LD - so the
+ * structured answer and the visible answer cannot diverge.
  */
-export default function Faq({ limit, heading = true }) {
+export default function Faq({ limit, heading = true, items: customItems }) {
   const [open, setOpen] = useState(0)
   const uid = useId()
-  const items = limit ? FAQ.slice(0, limit) : FAQ
+  const items = customItems ?? (limit ? FAQ.slice(0, limit) : FAQ)
 
   return (
     <>

@@ -22,7 +22,7 @@
 // sibling project retyped this origin in three files and one copy had already
 // drifted to a domain that was not theirs, so do not retype it.
 // =========================================================
-import { FAQ, MIN_DEPOSIT } from './content.js'
+import { FAQ, MIN_DEPOSIT, REVIEW_PAGE } from './content.js'
 
 // Imported for use here, and re-exported so the files that already import
 // these from seo.js keep working - site.js stays the one place the values are
@@ -162,6 +162,31 @@ export const seo = {
     ogImageAlt: 'Ceravindo, an AI trading platform for global markets',
     type: 'website',
     schema: [organization, website, serviceSchema(), buildFaqPage()],
+  },
+
+  'ceravindo-review': {
+    title: 'Ceravindo Review: What The Platform Does',
+    description:
+      'A clear look at the Ceravindo AI trading platform: the six tools, the limits and what it does not do. Read the review first.',
+    keywords:
+      'Ceravindo review, Ceravindo AI trading review, Ceravindo platform, AI trading platform review',
+    robots: INDEX,
+    canonical: `${SITE}/ceravindo-review`,
+    ogImageAlt: 'Ceravindo review, covering the platform tools and its limits',
+    type: 'article',
+    schema: [
+      organization,
+      webPage(
+        'Ceravindo Review',
+        `${SITE}/ceravindo-review`,
+        'A review of the Ceravindo AI trading platform: the tools, the limits and what it does not do.',
+      ),
+      breadcrumbs([
+        { name: 'Home', path: '/' },
+        { name: 'Ceravindo Review', path: '/ceravindo-review' },
+      ]),
+      buildFaqPage(REVIEW_PAGE.faq),
+    ],
   },
 
   about: {

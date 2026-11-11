@@ -25,6 +25,7 @@ export const MIN_DEPOSIT = null
 export const NAV = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
+  { label: 'Review', href: '/ceravindo-review' },
   { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
 ]
@@ -283,6 +284,127 @@ export const REVIEWS = {
       rating: 4,
     },
   ],
+}
+
+/* -------------------------------------------------------------------------
+   Review page
+   -------------------------------------------------------------------------
+   A review published by the site about its own product. Everything below
+   restates facts the rest of the site already carries: no deposit figure, no
+   fee claim, no performance number and no score. Those were not supplied,
+   and an invented one is exactly the claim this project refuses to print.
+   ------------------------------------------------------------------------- */
+
+export const REVIEW_PAGE = {
+  title: 'Ceravindo Review: What The Platform Does',
+  lead: 'A plain look at what Ceravindo offers, what it deliberately leaves out, and the limits to weigh before you create an account.',
+  shortAnswers: [
+    { ok: true, text: 'Research and practice tools, not trade instructions' },
+    { ok: true, text: 'Six tools sharing one dataset' },
+    { ok: true, text: 'No trade execution and no client money' },
+    { ok: false, text: 'No card details or password at sign up' },
+  ],
+  verdict: {
+    title: 'The Short Answer',
+    body: 'Ceravindo is a research and practice platform for people who trade. It reads public market data across crypto, forex, equities and commodities, then publishes a plain English brief that shows its reasoning. The tools let you test ideas with simulated funds and plan a position before real money is involved. What it does not do is trade for you, hold your money or tell you what to buy.',
+  },
+  facts: [
+    { label: 'What It Is', value: 'AI market research and practice platform' },
+    { label: 'Markets', value: 'Crypto, forex, equities and commodities' },
+    { label: 'Tools', value: 'Six research and practice tools' },
+    { label: 'What It Avoids', value: 'Trade execution and client money' },
+  ],
+  toolsTitle: 'Six Tools In One Workspace',
+  toolsLead:
+    'Every tool runs on the same market data, so a brief, a chart reading and a signal do not disagree with each other.',
+  balance: {
+    title: 'What Works Well, And What To Weigh',
+    lead: 'A review that lists only strengths is not much of a review. This is the useful part, and the part that needs your attention.',
+    prosTitle: 'What Works Well',
+    pros: [
+      'Each brief shows its reasoning, so you can judge the conclusion instead of taking it on faith.',
+      'The paper trading simulator lets you test an idea with simulated funds before you risk anything.',
+      'Risk tools put position size and the loss at your stop in front of you before you commit.',
+      'Six tools share one dataset, which keeps the picture consistent from screen to screen.',
+      'Sign up asks for your name, email and phone. It does not ask for card details or a password.',
+    ],
+    consTitle: 'What To Weigh',
+    cons: [
+      'The research describes markets. It does not predict them, and it will be wrong sometimes.',
+      'Ceravindo does not execute trades, so every order stays with you and your own broker.',
+      'A signal is a starting point for research, not an instruction to buy or sell.',
+      'The tools support your research. They do not replace personal financial advice.',
+      'Outcomes depend on how you use the research, not on the platform alone.',
+    ],
+  },
+  audience: {
+    title: 'Who It Suits, And Who It Does Not',
+    lead: 'The platform is built for a particular kind of user. If you are not that user, it will not fix that.',
+    forTitle: 'It Suits',
+    forList: [
+      'Traders who want to understand the reasoning behind a market call.',
+      'Beginners who want a place to practise before risking real money.',
+      'People who already have a broker and want better research around their own decisions.',
+      'Anyone covering crypto, forex, equities or commodities who wants one consistent view.',
+    ],
+    notForTitle: 'It Does Not Suit',
+    notForList: [
+      'Anyone looking for a guaranteed outcome or a system that trades without them.',
+      'People who want personal financial advice tailored to their situation.',
+      'Traders who want the platform to hold funds or place orders.',
+      'Anyone who cannot afford to lose the money they trade with.',
+    ],
+  },
+  signup: {
+    title: 'Sign Up And Your Details',
+    body: [
+      'The form asks for your first name, last name, email and phone number, plus consent to the privacy policy and terms. There is no password field and no card field at this stage.',
+      'Those details go to the registration service that sets up your account, as the privacy policy describes. They are not sold. You can ask for them to be removed at any time by writing to support.',
+      'Creating an account does not connect a broker, open a trading position or move any money. It gives you access to the research and practice tools.',
+    ],
+    fieldsTitle: 'What The Form Asks For',
+    fields: [
+      'First name',
+      'Last name',
+      'Email',
+      'Phone number',
+      'Consent to the privacy policy and terms',
+    ],
+  },
+  faqTitle: 'Review Questions',
+  faqLead: 'The questions a reader should ask before trusting any review, including this one.',
+  faq: [
+    {
+      q: 'Is Ceravindo A Scam?',
+      a: 'Ceravindo is a market research and practice platform, not a broker. It does not hold client money, does not execute trades and does not ask for card details at sign up. This review is published by Ceravindo about its own product, so weigh the limits on this page before you decide.',
+    },
+    {
+      q: 'Does Ceravindo Guarantee Profits?',
+      a: 'No. Market research describes what the data shows. It does not predict outcomes, and any platform that promises a guaranteed outcome should be treated with suspicion.',
+    },
+    {
+      q: 'Can I Lose Money With Ceravindo?',
+      a: 'Yes, if you trade with real money anywhere. Markets fall as well as rise, and leverage magnifies the result in both directions. Ceravindo does not manage your positions, so the risk sits with your decisions and the broker you use.',
+    },
+    {
+      q: 'Does Ceravindo Place Trades For Me?',
+      a: 'No. Ceravindo does not connect to a broker, does not hold funds and cannot place orders. It produces research and gives you a place to practise. Execution stays with you and your own broker.',
+    },
+    {
+      q: 'What Do I Need To Sign Up?',
+      a: 'A first name, last name, email address, phone number and consent to the privacy policy and terms. No card details, no broker connection and no password are collected.',
+    },
+    {
+      q: 'How Do I Stop Using Ceravindo?',
+      a: 'Write to the support address and ask for your details to be removed from the active service. The privacy policy sets out the retention period that applies after that request.',
+    },
+  ],
+  cta: {
+    title: 'Judge It By What It Does',
+    body: 'Create an account and read a market brief for yourself. No card details, no broker connection, no password.',
+    label: 'Create Your Account',
+    href: '/#register',
+  },
 }
 
 /* -------------------------------------------------------------------------
